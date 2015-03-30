@@ -152,7 +152,7 @@ public class FourmiSoldat extends Fourmi implements Runnable, Observer{
 			int nextDeplacementX = this.getPosX()+deplacementX;
 			int nextDeplacementY = this.getPosY()+deplacementY;
 			
-			System.out.println(deplacementX +" "+ deplacementY);
+			System.out.println("FS"+this.getIdFourmi()+": " + deplacementX +" "+ deplacementY);
 			
 			// test si on est encore sur le terrain ou a +/- de distance
 			// de la fourmilliere (de la reine)
@@ -186,19 +186,20 @@ public class FourmiSoldat extends Fourmi implements Runnable, Observer{
 		EnumPheromone pheromoneRecu = (EnumPheromone)arg;
 		
 		switch (pheromoneRecu){
-		case VIVRE:
-			// TODO : fourmi doit vivre, creer le thread ?
-			break;
-		case MOURIR:
-			// TODO : fourmi doit mourir, quitter le thread ?
-			break;
-		case ATTAQUER:
-			// TODO : fourmi doit attaquer seulement si elle trouve quelqu'un sur la case
-			break;
-		case NOURRITURE:
-			// TODO : fourmi doit aller chercher de la nourriture et la ramener
-			break;
-		}
+			case VIVRE:
+				// TODO : fourmi doit vivre, creer le thread ?
+				break;
+			case MOURIR:
+				// TODO : fourmi doit mourir, quitter le thread ?
+				break;
+			case ATTAQUER:
+				// TODO : fourmi doit attaquer seulement si elle trouve quelqu'un sur la case
+				break;
+			case NOURRITURE:
+				// TODO : fourmi doit aller chercher de la nourriture et la ramener
+				break;
+			}
 		
 	}
+	
 }

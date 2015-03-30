@@ -132,7 +132,7 @@ public class FourmiChef extends Fourmi implements Runnable, Observer{
 			int nextDeplacementX = this.getPosX()+deplacementX;
 			int nextDeplacementY = this.getPosY()+deplacementY;
 			
-			System.out.println(deplacementX +" "+ deplacementY);
+			System.out.println("FC"+this.getIdFourmi()+": " + deplacementX +" "+ deplacementY);
 			
 			// test si on est encore sur le terrain ou a +/- de distance
 			// de la fourmilliere (de la reine)
