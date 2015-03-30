@@ -110,7 +110,8 @@ public class FourmiChef extends Fourmi implements Runnable, Observer{
 	}
 	
 	/**
-	 * 
+	 * Methode appellee lors de l'existance d'un Thread pour faire "vivre"
+	 * une fourmi
 	 */
 	@Override
 	public void run() {
