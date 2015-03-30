@@ -5,6 +5,7 @@ import java.util.Observer;
 import java.util.Random;
 
 import environnements.Terrain;
+import fourmis.FourmiReine.EnumPheromone;
 
 /**
  * 
@@ -180,8 +181,25 @@ public class FourmiSoldat extends Fourmi implements Runnable, Observer{
 
 	@Override
 	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
+		// TODO Tester les differents messages recu
+		
+		// Cast de l'objet recu au bon format
+		EnumPheromone pheromoneRecu = (EnumPheromone)arg;
+		
+		switch (pheromoneRecu){
+		case VIVRE:
+			// TODO : fourmi doit vivre, creer le thread ?
+			break;
+		case MOURIR:
+			// TODO : fourmi doit mourir, quitter le thread ?
+			break;
+		case ATTAQUER:
+			// TODO : fourmi doit attaquer seulement si elle trouve quelqu'un sur la case
+			break;
+		case NOURRITURE:
+			// TODO : fourmi doit aller chercher de la nourriture et la ramener
+			break;
+		}
 		
 	}
-
 }

@@ -17,7 +17,11 @@ public class FourmiReine extends Fourmi implements Runnable {
 	
 	/* ===========================ATRB================================ */
 
-	private static enum EnumPheromone {NOURRITURE, ATTAQUER, VIVRE, MOURIR}; //attribut observable
+	/*
+	 * ATTENTION : si ajout d'un nouveau type, modifier les updates des
+	 * fourmis chef et soldat
+	 */
+	public static enum EnumPheromone {NOURRITURE, ATTAQUER, VIVRE, MOURIR}; //attribut observable
 	private EnumPheromone typePheromone;
 	private ArrayList<Oeuf> oeufAEclore = new ArrayList<>();
 	private Pheromone unPheromone;
