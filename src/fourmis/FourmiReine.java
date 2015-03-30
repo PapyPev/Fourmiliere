@@ -195,7 +195,7 @@ public class FourmiReine extends Fourmi implements Runnable {
 	 */
 	@Override
 	public void run(){
-		// TODO : Euh...
+		// TODO : Definir ce que doit faire la reine
 	}
 	
 
