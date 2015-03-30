@@ -15,6 +15,12 @@ public class Pheromone extends Observable{
 
 	private String message;
 	
+	/* ===========================CONST================================ */
+
+	public Pheromone(){
+		super();
+	}
+	
 	/* ==========================G/S================================== */
 	
 	public String getMessage(){

@@ -42,6 +42,7 @@ public class FourmiReine extends Fourmi implements Runnable {
 			int qtNourritureTransportee, int qtNourritureTransportable) {
 		super(idFourmi, typeFourmi, fkTerrain, combattant, dureeVie, pointDeVie, 
 				posX, posY, qtNourritureTransportee, qtNourritureTransportable);
+		this.unPheromone = new Pheromone();
 	}
 	
 	/**
@@ -61,6 +62,7 @@ public class FourmiReine extends Fourmi implements Runnable {
 			int qtNourritureTransportee, int qtNourritureTransportable) {
 		super(idFourmi, setRandomEnumCellule(), fkTerrain, combattant, dureeVie, 
 				pointDeVie, posX, posY, qtNourritureTransportee, qtNourritureTransportable);
+		this.unPheromone = new Pheromone();
 	}
 	
 	/* ==========================G/S================================== */
@@ -132,8 +134,8 @@ public class FourmiReine extends Fourmi implements Runnable {
 			// Ajout des oeufs a eclore dans l'AL
 			this.oeufAEclore.add(uneFourmiChef);
 			
-			// TODO : Ajout d'un observer vers la reine pour les chefs
-			//this.unPheromone.addObserver(uneFourmiChef);
+			// Ajout d'un observer vers la reine pour les chefs
+			this.unPheromone.addObserver(uneFourmiChef);
 			
 			nbOeufsConstruits++;
 			
@@ -149,8 +151,8 @@ public class FourmiReine extends Fourmi implements Runnable {
 				// Ajouter des oeufs a eclore dans l'AL
 				this.oeufAEclore.add(uneFourmiSoldat);
 				
-				// TODO : Ajout d'un observer vers le chef pour les soldats
-				//this.unPheromone.addObserver(uneFourmiChef);
+				// Ajout d'un observer vers le chef pour les soldats
+				this.unPheromone.addObserver(uneFourmiChef);
 				
 				nbSoldatAConstruirePourCeChef++;
 				nbOeufsConstruits++;

@@ -159,7 +159,7 @@ public class FourmiChef extends Fourmi implements Runnable, Observer{
 
 	@Override
 	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
+		// TODO Tester les differents messages recu
 		
 	}
 
