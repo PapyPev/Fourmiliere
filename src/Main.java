@@ -32,9 +32,7 @@ public class Main {
 			int initX,initY = 0;
 			initX = 0 + r1.nextInt(lignes-0);
 			initY = 0 + r2.nextInt(colonnes-0);
-			
-			System.out.println(initX+" "+initY);
-			
+						
 			// Creation de la FourmiReine
 			FourmiReine uneFourmiReine = new FourmiReine(i, monTerrain, false, 100, 100, initX, initY, 0, 0);
 			lesFourmilieres.add(uneFourmiReine);
