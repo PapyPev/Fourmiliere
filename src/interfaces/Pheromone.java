@@ -28,6 +28,7 @@ public class Pheromone extends Observable{
 	}
 	
 	public void setMessage(String message){
+		System.out.println(message);
 		this.message = message;
 		notifierObserver();
 	}

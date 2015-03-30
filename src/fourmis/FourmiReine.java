@@ -164,13 +164,26 @@ public class FourmiReine extends Fourmi implements Runnable {
 	}
 	
 	/**
+	 * Methode permettant d'informer les fourmi Observer d'un message
+	 * @param messagePheromone : message a envoyer aux fourmis
+	 */
+	public void informerParPheromone(EnumPheromone messagePheromone){
+		this.unPheromone.setMessage(messagePheromone.toString());
+	}
+	
+	/**
 	 * Methode permettant d'appeller la fonction d'eclosion de la classe Oeufs.
 	 * La methode de la classe oeufs permet de lancer un thread par oeufs.
 	 */
 	public void eclosion(){
+		
+		// Eclore les oeufs en creant un thread
 		for (int i = 0; i < this.oeufAEclore.size(); i++) {
 			oeufAEclore.get(i).eclosion();
 		}
+		
+		// Informer les fourmis qu'elles doivent vivre
+		informerParPheromone(EnumPheromone.VIVRE);
 	}
 	
 	/**
