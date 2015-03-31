@@ -21,6 +21,7 @@ public class FourmiChef extends Fourmi implements Runnable, Observer{
 	private int DIST_MAX_REINE = 4; //nb de cellule autours de la reine apres naissance
 	private FourmiReine fkFourmiReine;
 	private int qtNourritureRecoltee;
+	private EnumPheromone pheromoneCourant;
 	
 	/* ===========================CONST================================ */
 
@@ -47,6 +48,7 @@ public class FourmiChef extends Fourmi implements Runnable, Observer{
 				posX, posY, qtNourritureTransportee, qtNourritureTransportable);
 		this.fkFourmiReine = fkFourmiReine;
 		this.qtNourritureRecoltee = qtNourritureRecoltee;
+		this.pheromoneCourant = EnumPheromone.RIEN;
 	}
 	
 	/* ==========================G/S================================== */
@@ -63,6 +65,13 @@ public class FourmiChef extends Fourmi implements Runnable, Observer{
 	}
 	public void setQtNourritureRecoltee(int qtNourritureRecoltee) {
 		this.qtNourritureRecoltee = qtNourritureRecoltee;
+	}
+	
+	public EnumPheromone getPheromoneCourant() {
+		return pheromoneCourant;
+	}
+	public synchronized void setPheromoneCourant(EnumPheromone pheromoneCourant) {
+		this.pheromoneCourant = pheromoneCourant;
 	}
 	
 	/* ===========================ACTIONS============================= */
@@ -187,9 +196,36 @@ public class FourmiChef extends Fourmi implements Runnable, Observer{
 		int i = 0;
 		int maxMouvements = 4;
 
+		System.out.println(pheromoneCourant);
 		while(i < maxMouvements){
 			
-			this.pheromoneVivre();
+			switch(this.pheromoneCourant){
+				case RIEN:
+					// TODO : une fourmi chef ne doit pas chercher de nourriture
+					System.out.println("Chef : RIEN");
+					break;
+				case VIVRE:
+					// TODO : tourner autours de la fourmiliere
+					System.out.println("Chef : VIVRE");
+					this.pheromoneVivre();
+					break;
+				case MOURIR:
+					// TODO : fourmi doit mourir, quitter le thread ?
+					System.out.println("Chef : MOURIR");
+					break;
+				case ATTAQUER:
+					// TODO : une fourmi chef ne doit pas attaquer
+					System.out.println("Chef : ATTAQUER");
+					break;
+				case NOURRITURE:
+					// TODO : une fourmi chef ne doit pas chercher de nourriture
+					System.out.println("Chef : NOURRITURE");
+					break;
+				default:
+					System.out.println("WARNING: Update Chef, Message pheromone inconnu.");
+					break;
+			
+			}
 			
 			i++;
 						
@@ -201,34 +237,16 @@ public class FourmiChef extends Fourmi implements Runnable, Observer{
 	public void update(Observable o, Object arg) {
 		// TODO Tester les differents messages recu
 		
-		if(arg != null){
-			// Cast de l'objet recu au bon format
-			EnumPheromone pheromoneRecu = (EnumPheromone)arg;
+		// Cast de l'objet recu au bon format
+		EnumPheromone pheromoneRecu = (EnumPheromone)arg;
 		
-			switch (pheromoneRecu){
-				case VIVRE:
-					// TODO : tourner autours de la fourmiliere
-					System.out.println("VIVRE");
-					break;
-				case MOURIR:
-					// TODO : fourmi doit mourir, quitter le thread ?
-					System.out.println("MOURIR");
-					break;
-				case ATTAQUER:
-					// TODO : une fourmi chef ne doit pas attaquer
-					System.out.println("ATTAQUER");
-					break;
-				case NOURRITURE:
-					// TODO : une fourmi chef ne doit pas chercher de nourriture
-					System.out.println("NOURRITURE");
-					break;
-				default:
-					System.out.println("WARNING: Update Chef, Message pheromone inconnu.");
-					break;
-			}
+		if(pheromoneRecu != null){
 			
-		} else {
-			System.out.println("WARNING: Update Chef, Message pheromone est nul.");
+			// Met a jour le message courant
+			this.setPheromoneCourant(pheromoneRecu);
+			
+		} else{
+			System.out.println("WARNING: Update Soldat, Message pheromone null.");
 		}
 		
 	}
