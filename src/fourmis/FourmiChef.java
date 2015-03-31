@@ -93,11 +93,11 @@ public class FourmiChef extends Fourmi implements Runnable, Observer{
 	}
 
 	/**
-	 * Fonction qui met à jour le nombre de soldat vivant
+	 * Fonction qui met ï¿½ jour le nombre de soldat vivant
 	 * @param val
 	 */
 	public synchronized void updateNbSoldat(int val){
-		// Décrémente le nombre 
+		// Dï¿½crï¿½mente le nombre 
 		this.nbSoldatVivant -= val;
 		// Debloque le wait du thread en cours
 		notify(); 
@@ -119,24 +119,27 @@ public class FourmiChef extends Fourmi implements Runnable, Observer{
 	 */
 	@Override
 	public synchronized void run() {
-		// Action a effectuer en fonction du pheromone en cours
-		switch(this.pheromoneCourant){
-			case RIEN:
-			case VIVRE:
-			case NOURRITURE:
-			case ATTAQUER:
-				break; // Ne rien faire
-			case MOURIR:
-				this.nbSoldatVivant = 0; // Fonction qui tue le thread en cours de la fourmi
-				break;
-			default:
-				System.out.println("WARNING: Update Chef, Message pheromone inconnu.");
-				this.setPheromoneCourant(EnumPheromone.RIEN);
-				break;
-		}
 		
-		// Si le nombre de soldat est supérieur à zero
+		// Si le nombre de soldat est superieur a zero
 		while(this.nbSoldatVivant > 0){
+			
+			// Action a effectuer en fonction du pheromone en cours
+			switch(this.pheromoneCourant){
+				case RIEN:
+				case VIVRE:
+				case NOURRITURE:
+				case ATTAQUER:
+					break; // Ne rien faire
+				case MOURIR:
+					// Fonction qui tue le thread en cours de la fourmi
+					this.nbSoldatVivant = 0;
+					break;
+				default:
+					System.out.println("WARNING: Update Chef, Message pheromone inconnu.");
+					this.setPheromoneCourant(EnumPheromone.RIEN);
+					break;
+			}
+			
 			// Attend dans le thread un notify pour continuer
 			try{
 				wait();
@@ -150,7 +153,7 @@ public class FourmiChef extends Fourmi implements Runnable, Observer{
 	}
 
 	@Override
-	public void update(Observable o, Object arg) {
+	public synchronized void update(Observable o, Object arg) {
 				
 		// Cast de l'objet recu au bon format
 		EnumPheromone pheromoneRecu = (EnumPheromone)arg;

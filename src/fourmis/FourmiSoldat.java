@@ -19,6 +19,7 @@ public class FourmiSoldat extends Fourmi implements Runnable, Observer{
 	/* ===========================ATRB================================ */
 	
 	private int DIST_MAX_REINE = 4; //nb de cellule autours de la reine apres naissance
+	private int DIST_VISUELLE = 2; // nb de cellule vues autours de cette fourmi
 	private FourmiChef fkFourmiChef;
 	private EnumPheromone pheromoneCourant;
 	
@@ -234,6 +235,14 @@ public class FourmiSoldat extends Fourmi implements Runnable, Observer{
 	public void pheromoneNourriture(){
 		// TODO : parcourir la map et ramener la nourriture si plein
 		// puis repartir a la recherche
+		
+		// Recherche la cellule ideale a 2 cellules autours
+		// Si il y a une cellule idealle
+			// Recuperer les coordonnees de la cellule
+			// se deplacer jusqu'a la cellule
+		// Sinon
+			//
+		
 	}
 	
 	/**
