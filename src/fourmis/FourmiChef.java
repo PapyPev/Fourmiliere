@@ -166,7 +166,7 @@ public class FourmiChef extends Fourmi implements Runnable, Observer{
 	/**
 	 * Methode permettant a une fourmi d'arreter son existance
 	 */
-	public void pheromoneMort(){
+	public void pheromoneMourir(){
 		// TODO : mettre fin au thread de la fourmi Soldat
 		// TODO : informer la fourmi chef qu'on est mort
 	}
@@ -211,14 +211,17 @@ public class FourmiChef extends Fourmi implements Runnable, Observer{
 				case MOURIR:
 					// TODO : fourmi doit mourir, quitter le thread ?
 					System.out.println("Chef : MOURIR");
+					this.pheromoneMourir();
 					break;
 				case ATTAQUER:
 					// TODO : une fourmi chef ne doit pas attaquer
 					System.out.println("Chef : ATTAQUER");
+					this.pheromoneAttaquer();
 					break;
 				case NOURRITURE:
 					// TODO : une fourmi chef ne doit pas chercher de nourriture
 					System.out.println("Chef : NOURRITURE");
+					this.pheromoneNourriture();
 					break;
 				default:
 					System.out.println("WARNING: Update Chef, Message pheromone inconnu.");
