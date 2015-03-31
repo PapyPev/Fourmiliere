@@ -130,7 +130,10 @@ public class FourmiSoldat extends Fourmi implements Runnable, Observer{
 		nouveauThread.start(); //appel la fonction run()
 	}
 	
-	
+	/**
+	 * Methode permettant a une fourmi de vivre a une distance
+	 * de la fourmiliere
+	 */
 	public void pheromoneVivre(){
 		// mouvements aleatoire autours de la fourmiliere
 		Random r1 = new Random();
@@ -161,6 +164,37 @@ public class FourmiSoldat extends Fourmi implements Runnable, Observer{
 				
 			}
 		}
+	}
+	
+	/**
+	 * Methode permettant de retourner a cote de la fourmiliere
+	 */
+	public void retournerFourmiliere(){
+		// TODO : determiner l'endroit ou on se situe et retourne a la fourmiliere
+		
+	}
+	
+	/**
+	 * Methode permettant a une fourmi d'arreter son existance
+	 */
+	public void pheromoneMort(){
+		// TODO : mettre fin au thread de la fourmi Soldat
+		// TODO : informer la fourmi chef qu'on est mort
+	}
+	
+	/**
+	 * Methode permettant a une fourmi d'aller chercher de la nourriture
+	 */
+	public void pheromoneNourriture(){
+		// TODO : parcourir la map et ramener la nourriture si plein
+		// puis repartir a la recherche
+	}
+	
+	/**
+	 * Methode permettant a une fourmi si elle est soldat d'attaquer
+	 */
+	public void pheromoneAttaquer(){
+		// TODO : si une fourmi est sur la cellule en cours, attaquer
 	}
 
 	/**

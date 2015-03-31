@@ -111,54 +111,85 @@ public class FourmiChef extends Fourmi implements Runnable, Observer{
 	}
 	
 	/**
-	 * Methode appellee lors de l'existance d'un Thread pour faire "vivre"
-	 * une fourmi
+	 * Methode permettant a une fourmi de vivre a une distance
+	 * de la fourmiliere
+	 */
+	public void pheromoneVivre(){
+		// mouvements aleatoire autours de la fourmiliere
+		Random r1 = new Random();
+		Random r2 = new Random();
+		int deplacementX = r1.nextInt(1 + 1) -1;
+		int deplacementY = r2.nextInt(1 + 1) -1;
+		
+		int nextDeplacementX = this.getPosX()+deplacementX;
+		int nextDeplacementY = this.getPosY()+deplacementY;
+		
+		System.out.println("FS"+this.getIdFourmi()+": " + deplacementX +" "+ deplacementY);
+		
+		// test si on est encore sur le terrain ou a +/- de distance
+		// de la fourmilliere (de la reine)
+		if (nextDeplacementX < this.getFkTerrain().getNbLigne() 
+				&& nextDeplacementX >= 0 
+				&& (nextDeplacementX <= (this.getFkFourmiReine().getPosX()+this.DIST_MAX_REINE)
+					|| nextDeplacementX <= (this.getFkFourmiReine().getPosX()-this.DIST_MAX_REINE))
+				) {
+			this.setPosX(nextDeplacementX);
+			
+			if (nextDeplacementY < this.getFkTerrain().getNbColonne() 
+					&& nextDeplacementY >= 0 
+					&& (nextDeplacementY <= (this.getFkFourmiReine().getPosY()+this.DIST_MAX_REINE)
+						|| nextDeplacementY <= (this.getFkFourmiReine().getPosY()-this.DIST_MAX_REINE))
+					) {
+				this.setPosY(nextDeplacementY);
+				
+			}
+		}
+	}
+	
+	/**
+	 * Methode permettant de retourner a cote de la fourmiliere
+	 */
+	public void retournerFourmiliere(){
+		// TODO : determiner l'endroit ou on se situe et retourne a la fourmiliere
+		
+	}
+	
+	/**
+	 * Methode permettant a une fourmi d'arreter son existance
+	 */
+	public void pheromoneMort(){
+		// TODO : mettre fin au thread de la fourmi Soldat
+		// TODO : informer la fourmi chef qu'on est mort
+	}
+	
+	/**
+	 * Methode permettant a une fourmi d'aller chercher de la nourriture
+	 */
+	public void pheromoneNourriture(){
+		// TODO : parcourir la map et ramener la nourriture si plein
+		// puis repartir a la recherche
+	}
+	
+	/**
+	 * Methode permettant a une fourmi si elle est soldat d'attaquer
+	 */
+	public void pheromoneAttaquer(){
+		// TODO : si une fourmi est sur la cellule en cours, attaquer
+	}
+
+	/**
+	 * Methode permettant a ue fourmi soldat de vivre son existance
 	 */
 	@Override
-	public void run() {
+	public synchronized void run() {
 		// TODO : verifier si ca fonctionne autours de la fourmiliere
-				
+		
 		int i = 0;
 		int maxMouvements = 4;
-		
-		try {
-			wait();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+
 		while(i < maxMouvements){
 			
-			// mouvements aleatoire autours de la fourmiliere
-			Random r1 = new Random();
-			Random r2 = new Random();
-			int deplacementX = r1.nextInt(1 + 1) -1;
-			int deplacementY = r2.nextInt(1 + 1) -1;
-			
-			int nextDeplacementX = this.getPosX()+deplacementX;
-			int nextDeplacementY = this.getPosY()+deplacementY;
-			
-			System.out.println("FC"+this.getIdFourmi()+": " + deplacementX +" "+ deplacementY);
-			
-			// test si on est encore sur le terrain ou a +/- de distance
-			// de la fourmilliere (de la reine)
-			if (nextDeplacementX < this.getFkTerrain().getNbLigne() 
-					&& nextDeplacementX >= 0 
-					&& (nextDeplacementX <= (this.getFkFourmiReine().getPosX()+this.DIST_MAX_REINE)
-						|| nextDeplacementX <= (this.getFkFourmiReine().getPosX()-this.DIST_MAX_REINE))
-					) {
-				this.setPosX(nextDeplacementX);
-				
-				if (nextDeplacementY < this.getFkTerrain().getNbColonne() 
-						&& nextDeplacementY >= 0 
-						&& (nextDeplacementY <= (this.getFkFourmiReine().getPosY()+this.DIST_MAX_REINE)
-							|| nextDeplacementY <= (this.getFkFourmiReine().getPosY()-this.DIST_MAX_REINE))
-						) {
-					this.setPosY(nextDeplacementY);
-					
-				}
-			}
+			this.pheromoneVivre();
 			
 			i++;
 						
