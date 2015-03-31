@@ -196,7 +196,6 @@ public class FourmiChef extends Fourmi implements Runnable, Observer{
 		int i = 0;
 		int maxMouvements = 4;
 
-		System.out.println(pheromoneCourant);
 		while(i < maxMouvements){
 			
 			switch(this.pheromoneCourant){

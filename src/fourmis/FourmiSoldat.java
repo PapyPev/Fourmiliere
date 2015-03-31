@@ -215,7 +215,6 @@ public class FourmiSoldat extends Fourmi implements Runnable, Observer{
 		int i = 0;
 		int maxMouvements = 10;
 
-		System.out.println(pheromoneCourant);
 		while(i < maxMouvements){
 			
 			switch(this.pheromoneCourant){
@@ -262,7 +261,7 @@ public class FourmiSoldat extends Fourmi implements Runnable, Observer{
 		if(pheromoneRecu != null){
 			
 			// Met a jour le message courant
-			this.pheromoneCourant = pheromoneRecu;
+			setPheromonecourant(pheromoneRecu);
 			
 		} else{
 			System.out.println("WARNING: Update Soldat, Message pheromone null.");
