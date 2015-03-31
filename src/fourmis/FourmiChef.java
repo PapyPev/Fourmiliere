@@ -93,11 +93,11 @@ public class FourmiChef extends Fourmi implements Runnable, Observer{
 	}
 
 	/**
-	 * Fonction qui met à jour le nombre de soldat vivant
+	 * Fonction qui met a jour le nombre de soldat vivant
 	 * @param val
 	 */
 	public synchronized void updateNbSoldat(int val){
-		// Décrémente le nombre 
+		// Decremente le nombre 
 		this.nbSoldatVivant -= val;
 		// Debloque le wait du thread en cours
 		notify(); 
@@ -119,7 +119,7 @@ public class FourmiChef extends Fourmi implements Runnable, Observer{
 	 */
 	@Override
 	public synchronized void run() {
-		// Si le nombre de soldat est supérieur à zero
+		// Si le nombre de soldat est superieur a zero
 		while(this.nbSoldatVivant > 0){
 			// Action a effectuer en fonction du pheromone en cours
 			switch(this.pheromoneCourant){
