@@ -172,7 +172,7 @@ public class FourmiReine extends Fourmi implements Runnable {
 	 * @param messagePheromone : message a envoyer aux fourmis
 	 */
 	public void informerParPheromone(EnumPheromone messagePheromone){
-		this.unPheromone.setMessage(messagePheromone.toString());
+		this.unPheromone.setMessage(messagePheromone);
 	}
 	
 	/**

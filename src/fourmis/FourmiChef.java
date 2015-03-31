@@ -121,6 +121,13 @@ public class FourmiChef extends Fourmi implements Runnable, Observer{
 		int i = 0;
 		int maxMouvements = 4;
 		
+		try {
+			wait();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		while(i < maxMouvements){
 			
 			// mouvements aleatoire autours de la fourmiliere
@@ -163,22 +170,34 @@ public class FourmiChef extends Fourmi implements Runnable, Observer{
 	public void update(Observable o, Object arg) {
 		// TODO Tester les differents messages recu
 		
-		// Cast de l'objet recu au bon format
-		EnumPheromone pheromoneRecu = (EnumPheromone)arg;
+		if(arg != null){
+			// Cast de l'objet recu au bon format
+			EnumPheromone pheromoneRecu = (EnumPheromone)arg;
 		
-		switch (pheromoneRecu){
-			case VIVRE:
-				System.out.println("test");
-				break;
-			case MOURIR:
-				// TODO : fourmi doit mourir, quitter le thread ?
-				break;
-			case ATTAQUER:
-				// TODO : une fourmi chef ne doit pas attaquer
-				break;
-			case NOURRITURE:
-				// TODO : une fourmi chef ne doit pas chercher de nourriture
-				break;
+			switch (pheromoneRecu){
+				case VIVRE:
+					// TODO : tourner autours de la fourmiliere
+					System.out.println("VIVRE");
+					break;
+				case MOURIR:
+					// TODO : fourmi doit mourir, quitter le thread ?
+					System.out.println("MOURIR");
+					break;
+				case ATTAQUER:
+					// TODO : une fourmi chef ne doit pas attaquer
+					System.out.println("ATTAQUER");
+					break;
+				case NOURRITURE:
+					// TODO : une fourmi chef ne doit pas chercher de nourriture
+					System.out.println("NOURRITURE");
+					break;
+				default:
+					System.out.println("WARNING: Update Chef, Message pheromone inconnu.");
+					break;
+			}
+			
+		} else {
+			System.out.println("WARNING: Update Chef, Message pheromone est nul.");
 		}
 		
 	}

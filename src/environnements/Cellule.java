@@ -89,10 +89,10 @@ public class Cellule {
 		this.qtNourritureNative = qtNourritureNative;
 	}
 	
-	public int getQtNourritureCourante() {
+	public synchronized int getQtNourritureCourante() {
 		return qtNourritureCourante;
 	}
-	public void setQtNourritureCourante(int qtNourritureCourante) {
+	public synchronized void setQtNourritureCourante(int qtNourritureCourante) {
 		this.qtNourritureCourante = qtNourritureCourante;
 	}
 	

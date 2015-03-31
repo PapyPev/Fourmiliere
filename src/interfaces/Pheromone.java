@@ -13,7 +13,7 @@ public class Pheromone extends Observable{
 
 	/* ===========================ATRB================================ */
 
-	private String message;
+	private Object message;
 	
 	/* ===========================CONST================================ */
 
@@ -23,11 +23,11 @@ public class Pheromone extends Observable{
 	
 	/* ==========================G/S================================== */
 	
-	public String getMessage(){
+	public Object getMessage(){
 		return this.message;
 	}
 	
-	public void setMessage(String message){
+	public void setMessage(Object message){
 		this.message = message;
 		notifierObserver();
 	}
@@ -39,7 +39,7 @@ public class Pheromone extends Observable{
 	 */
 	private void notifierObserver(){
 		setChanged(); //annonce a Observable qu'il y un changement
-		notifyObservers(); //annonce aux Observeurs qu'il y a eu une modification
+		notifyObservers(this.message); //annonce aux Observeurs qu'il y a eu une modification
 	}
 
 }
