@@ -133,7 +133,7 @@ public class FourmiReine extends Fourmi implements Runnable {
 			// Creation des fourmi chef
 			FourmiChef uneFourmiChef = new FourmiChef(nbOeufsConstruits, this.typeFourmi, 
 					this.getFkTerrain(), false, 100, 50, this.getPosX(), this.getPosY(), 
-					0, 0, this, 0);
+					0, 0, this, 0, nbOeufsSoldatParChef);
 			
 			// Ajout des oeufs a eclore dans l'AL
 			this.oeufAEclore.add(uneFourmiChef);
