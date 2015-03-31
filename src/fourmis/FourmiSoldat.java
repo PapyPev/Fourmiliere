@@ -11,7 +11,7 @@ import fourmis.FourmiReine.EnumPheromone;
  * 
  * @author pev
  * @category cours java
- * @version 20150331
+ * @version 20150328
  *
  */
 public class FourmiSoldat extends Fourmi implements Runnable, Observer{

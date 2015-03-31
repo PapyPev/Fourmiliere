@@ -188,7 +188,7 @@ public class FourmiReine extends Fourmi implements Runnable {
 		
 		// Informer les fourmis qu'elles doivent vivre
 		// TODO : REPRENDRE ICI verifier
-		//this.informerParPheromone(EnumPheromone.VIVRE);
+		this.informerParPheromone(EnumPheromone.VIVRE);
 	}
 	
 	/**
