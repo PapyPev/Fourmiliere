@@ -22,6 +22,7 @@ public class FourmiChef extends Fourmi implements Runnable, Observer{
 	private FourmiReine fkFourmiReine;
 	private int qtNourritureRecoltee;
 	private EnumPheromone pheromoneCourant;
+	private int nbSoldatVivant;
 	
 	/* ===========================CONST================================ */
 
@@ -39,16 +40,19 @@ public class FourmiChef extends Fourmi implements Runnable, Observer{
 	 * @param qtNourritureTransportable : qt nourriture transportable
 	 * @param fkFourmiReine : reference a la fourmi reine
 	 * @param qtNourritureRecoltee : compte le nombre de nourriture recoltee
+	 * @param nbSoldatVivant : nombre de soldat vivant
+
 	 */
 	public FourmiChef(int idFourmi, EnumFourmi typeFourmi, Terrain fkTerrain,
 			boolean combattant, int dureeVie, int pointDeVie, int posX, int posY,
 			int qtNourritureTransportee, int qtNourritureTransportable, FourmiReine fkFourmiReine, 
-			int qtNourritureRecoltee) {
+			int qtNourritureRecoltee, int nbSoldatVivant) {
 		super(idFourmi, typeFourmi, fkTerrain, combattant, dureeVie, pointDeVie, 
 				posX, posY, qtNourritureTransportee, qtNourritureTransportable);
 		this.fkFourmiReine = fkFourmiReine;
 		this.qtNourritureRecoltee = qtNourritureRecoltee;
 		this.pheromoneCourant = EnumPheromone.RIEN;
+		this.nbSoldatVivant = nbSoldatVivant;
 	}
 	
 	/* ==========================G/S================================== */
@@ -74,6 +78,13 @@ public class FourmiChef extends Fourmi implements Runnable, Observer{
 		this.pheromoneCourant = pheromoneCourant;
 	}
 	
+	public int getNbSoldatVivant() {
+		return this.nbSoldatVivant;
+	}
+	public void setNbSoldatVivant(int nbSoldatVivant) {
+		this.nbSoldatVivant = nbSoldatVivant;
+	}
+	
 	/* ===========================ACTIONS============================= */
 	
 	/**
@@ -92,18 +103,12 @@ public class FourmiChef extends Fourmi implements Runnable, Observer{
 	}
 
 	/**
-	 * 
+	 * Fonction qui met à jour le nombre de soldat vivant
+	 * @param val
 	 */
-	public void calculerNbSoldatsVivants(){
-		// TODO : calculer le nombre de fourmi de la meme espece
-	}
-	
-	/**
-	 * 
-	 */
-	public void calculerNbSoldatsMorts(){
-		// TODO : calculer soit par un increment lors des callback thread
-		// soit par un thread d'ecoute
+	public void updateNbSoldat(int val){
+		// Décrémente le nombre 
+		this.nbSoldatVivant -= val;
 	}
 
 	/**
@@ -213,6 +218,7 @@ public class FourmiChef extends Fourmi implements Runnable, Observer{
 			
 			// Met a jour le message courant
 			this.setPheromoneCourant(pheromoneRecu);
+			notify(); // Debloque le wait du thread en cours
 			System.out.println("Chef:" + pheromoneRecu);
 			
 		} else{
