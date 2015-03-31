@@ -62,6 +62,8 @@ public class FourmiSoldat extends Fourmi implements Runnable, Observer{
 	public void setPheromoneCourant(EnumPheromone pheromoneCourant) {
 		this.pheromoneCourant = pheromoneCourant;
 	}
+	
+	// TODO : toto
 
 	/* ===========================ACTIONS============================= */
 	
