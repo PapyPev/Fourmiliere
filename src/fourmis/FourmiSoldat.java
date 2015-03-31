@@ -127,8 +127,40 @@ public class FourmiSoldat extends Fourmi implements Runnable, Observer{
 	@Override
 	public void eclosion() {
 		Thread nouveauThread = new Thread(this);
-		nouveauThread.start();
-		//appel la fonction run()
+		nouveauThread.start(); //appel la fonction run()
+	}
+	
+	
+	public void pheromoneVivre(){
+		// mouvements aleatoire autours de la fourmiliere
+		Random r1 = new Random();
+		Random r2 = new Random();
+		int deplacementX = r1.nextInt(1 + 1) -1;
+		int deplacementY = r2.nextInt(1 + 1) -1;
+		
+		int nextDeplacementX = this.getPosX()+deplacementX;
+		int nextDeplacementY = this.getPosY()+deplacementY;
+		
+		System.out.println("FS"+this.getIdFourmi()+": " + deplacementX +" "+ deplacementY);
+		
+		// test si on est encore sur le terrain ou a +/- de distance
+		// de la fourmilliere (de la reine)
+		if (nextDeplacementX < this.getFkTerrain().getNbLigne() 
+				&& nextDeplacementX >= 0 
+				&& (nextDeplacementX <= (this.getFkFourmiChef().getFkFourmiReine().getPosX()+this.DIST_MAX_REINE)
+					|| nextDeplacementX <= (this.getFkFourmiChef().getFkFourmiReine().getPosX()-this.DIST_MAX_REINE))
+				) {
+			this.setPosX(nextDeplacementX);
+			
+			if (nextDeplacementY < this.getFkTerrain().getNbColonne() 
+					&& nextDeplacementY >= 0 
+					&& (nextDeplacementY <= (this.getFkFourmiChef().getFkFourmiReine().getPosY()+this.DIST_MAX_REINE)
+						|| nextDeplacementY <= (this.getFkFourmiChef().getFkFourmiReine().getPosY()-this.DIST_MAX_REINE))
+					) {
+				this.setPosY(nextDeplacementY);
+				
+			}
+		}
 	}
 
 	/**
@@ -140,38 +172,10 @@ public class FourmiSoldat extends Fourmi implements Runnable, Observer{
 		
 		int i = 0;
 		int maxMouvements = 4;
-		
+
 		while(i < maxMouvements){
 			
-			// mouvements aleatoire autours de la fourmiliere
-			Random r1 = new Random();
-			Random r2 = new Random();
-			int deplacementX = r1.nextInt(1 + 1) -1;
-			int deplacementY = r2.nextInt(1 + 1) -1;
-			
-			int nextDeplacementX = this.getPosX()+deplacementX;
-			int nextDeplacementY = this.getPosY()+deplacementY;
-			
-			System.out.println("FS"+this.getIdFourmi()+": " + deplacementX +" "+ deplacementY);
-			
-			// test si on est encore sur le terrain ou a +/- de distance
-			// de la fourmilliere (de la reine)
-			if (nextDeplacementX < this.getFkTerrain().getNbLigne() 
-					&& nextDeplacementX >= 0 
-					&& (nextDeplacementX <= (this.getFkFourmiChef().getFkFourmiReine().getPosX()+this.DIST_MAX_REINE)
-						|| nextDeplacementX <= (this.getFkFourmiChef().getFkFourmiReine().getPosX()-this.DIST_MAX_REINE))
-					) {
-				this.setPosX(nextDeplacementX);
-				
-				if (nextDeplacementY < this.getFkTerrain().getNbColonne() 
-						&& nextDeplacementY >= 0 
-						&& (nextDeplacementY <= (this.getFkFourmiChef().getFkFourmiReine().getPosY()+this.DIST_MAX_REINE)
-							|| nextDeplacementY <= (this.getFkFourmiChef().getFkFourmiReine().getPosY()-this.DIST_MAX_REINE))
-						) {
-					this.setPosY(nextDeplacementY);
-					
-				}
-			}
+			this.pheromoneVivre();
 			
 			i++;
 						
