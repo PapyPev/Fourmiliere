@@ -186,7 +186,8 @@ public class FourmiSoldat extends Fourmi implements Runnable, Observer{
 	public void pheromoneMourir(){
 		// TODO : mettre fin au thread de la fourmi Soldat
 		// TODO : informer la fourmi chef qu'on est mort
-		// Je vais coder ici
+		// Informer au chef que je vais mourrir
+		//this.getFkFourmiChef();
 	}
 	
 	/**
