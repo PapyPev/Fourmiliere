@@ -126,7 +126,10 @@ public class FourmiSoldat extends Fourmi implements Runnable, Observer{
 	 * la quantite de nourriture transportee tout en avertissant le chef
 	 */
 	public void deposerNourriture(){
-		// TODO : une fois a la fourmiliere, incrementer qt chef
+		// Incremente la nourriture du chef
+		this.getFkFourmiChef().setQtNourritureRecoltee(this.getFkFourmiChef().getQtNourritureRecoltee() + this.getQtNourritureTransportee());
+		// Remet a zero la quantite de la fourmi
+		this.setQtNourritureTransportee(0);
 	}
 	
 	/**
@@ -220,16 +223,6 @@ public class FourmiSoldat extends Fourmi implements Runnable, Observer{
 	}
 	
 	/**
-	 * Methode permettant a une fourmi d'arreter son existance
-	 */
-	public void pheromoneMourir(){
-		// TODO : mettre fin au thread de la fourmi Soldat
-		// TODO : informer la fourmi chef qu'on est mort
-		// Informer au chef que je vais mourrir
-		//this.getFkFourmiChef();
-	}
-	
-	/**
 	 * Methode permettant a une fourmi d'aller chercher de la nourriture
 	 */
 	public void pheromoneNourriture(){
@@ -259,7 +252,7 @@ public class FourmiSoldat extends Fourmi implements Runnable, Observer{
 	public synchronized void run() {
 		// TODO : verifier si ca fonctionne autours de la fourmiliere
 		
-		while(true){
+		while(this.getDureeVie() > 0){
 			
 			switch(this.pheromoneCourant){
 				case RIEN:
@@ -270,8 +263,7 @@ public class FourmiSoldat extends Fourmi implements Runnable, Observer{
 					this.pheromoneVivre();
 					break;
 				case MOURIR:
-					// TODO : fourmi doit mourir, quitter le thread ?
-					this.pheromoneMourir();
+					this.setDureeVie(0);
 					break;
 				case ATTAQUER:
 					// TODO : une fourmi chef ne doit pas attaquer
@@ -289,6 +281,9 @@ public class FourmiSoldat extends Fourmi implements Runnable, Observer{
 			}
 						
 		}
+		
+		// Decremente le nombre de soldat vivant, informe le chef
+		this.getFkFourmiChef().miseAJourNbSoldatVivants();
 		
 	}
 

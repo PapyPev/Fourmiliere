@@ -11,10 +11,7 @@ public class Main {
 	
 	public static void main(String[] args) {
 		
-		// TODO : Something...
 		ArrayList<FourmiReine> lesFourmilieres = new ArrayList<FourmiReine>();
-		
-		//System.out.println("----------- Starting -----------");
 		
 		int lignes = 30;
 		int colonnes = 30;
