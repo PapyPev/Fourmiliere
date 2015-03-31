@@ -245,7 +245,6 @@ public class FourmiSoldat extends Fourmi implements Runnable, Observer{
 
 	@Override
 	public void update(Observable o, Object arg) {
-		// TODO Tester les differents messages recu
 		
 		// Cast de l'objet recu au bon format
 		EnumPheromone pheromoneRecu = (EnumPheromone)arg;

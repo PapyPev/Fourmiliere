@@ -49,9 +49,14 @@ public class Main {
 		// Eclosion des oeufs
 		for (int i = 0; i < lesFourmilieres.size(); i++){
 			lesFourmilieres.get(i).eclosion();
-			lesFourmilieres.get(i).informerParPheromone(EnumPheromone.NOURRITURE);
+			
 		}
 		
+		// Informer aux fourmis d'aller chercher de la nourriture
+		for (int i = 0; i < lesFourmilieres.size(); i++){
+			lesFourmilieres.get(i).informerParPheromone(EnumPheromone.NOURRITURE);
+		}
+
 		
 		
 /*		System.out.println("Attente avant depart : None");
