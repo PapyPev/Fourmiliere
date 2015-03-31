@@ -96,9 +96,9 @@ public class FourmiChef extends Fourmi implements Runnable, Observer{
 	 * Fonction qui met a jour le nombre de soldat vivant
 	 * @param val
 	 */
-	public synchronized void updateNbSoldat(int val){
+	public synchronized void miseAJourNbSoldatVivants(){
 		// Decremente le nombre 
-		this.nbSoldatVivant -= val;
+		this.nbSoldatVivant --;
 		// Debloque le wait du thread en cours
 		notify(); 
 	}
