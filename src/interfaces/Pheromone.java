@@ -4,9 +4,9 @@ import java.util.Observable;
 
 /**
  * 
- * @author pev
+ * @author pev, fred
  * @category cours java
- * @version 20150328
+ * @version 20150331
  *
  */
 public class Pheromone extends Observable{

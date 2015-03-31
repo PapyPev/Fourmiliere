@@ -3,6 +3,7 @@ import java.util.Random;
 
 import environnements.Terrain;
 import fourmis.FourmiReine;
+import fourmis.FourmiReine.EnumPheromone;
 import static environnements.Cellule.EnumCellule;
 
 
@@ -48,7 +49,10 @@ public class Main {
 		// Eclosion des oeufs
 		for (int i = 0; i < lesFourmilieres.size(); i++){
 			lesFourmilieres.get(i).eclosion();
+			lesFourmilieres.get(i).informerParPheromone(EnumPheromone.NOURRITURE);
 		}
+		
+		
 		
 /*		System.out.println("Attente avant depart : None");
 		System.out.println("Exploration Start : None");

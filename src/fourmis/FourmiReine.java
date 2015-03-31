@@ -8,9 +8,9 @@ import environnements.Terrain;
 
 /**
  * 
- * @author pev
+ * @author pev, fred
  * @category cours java
- * @version 20150328
+ * @version 20150331
  *
  */
 public class FourmiReine extends Fourmi implements Runnable {
@@ -156,7 +156,7 @@ public class FourmiReine extends Fourmi implements Runnable {
 				this.oeufAEclore.add(uneFourmiSoldat);
 				
 				// Ajout d'un observer vers le chef pour les soldats
-				this.unPheromone.addObserver(uneFourmiChef);
+				this.unPheromone.addObserver(uneFourmiSoldat);
 				
 				nbSoldatAConstruirePourCeChef++;
 				nbOeufsConstruits++;
@@ -187,7 +187,6 @@ public class FourmiReine extends Fourmi implements Runnable {
 		}
 		
 		// Informer les fourmis qu'elles doivent vivre
-		// TODO : REPRENDRE ICI verifier
 		this.informerParPheromone(EnumPheromone.VIVRE);
 	}
 	

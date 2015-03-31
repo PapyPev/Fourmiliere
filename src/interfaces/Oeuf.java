@@ -2,7 +2,7 @@ package interfaces;
 
 /**
  * 
- * @author pev
+ * @author pev, fred
  * @category cours java
  * @version 20150328
  *

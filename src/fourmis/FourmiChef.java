@@ -9,9 +9,9 @@ import fourmis.FourmiReine.EnumPheromone;
 
 /**
  * 
- * @author pev
+ * @author pev, fred
  * @category cours java
- * @version 20150328
+ * @version 20150331
  *
  */
 public class FourmiChef extends Fourmi implements Runnable, Observer{
@@ -70,7 +70,7 @@ public class FourmiChef extends Fourmi implements Runnable, Observer{
 	public EnumPheromone getPheromoneCourant() {
 		return pheromoneCourant;
 	}
-	public synchronized void setPheromoneCourant(EnumPheromone pheromoneCourant) {
+	public void setPheromoneCourant(EnumPheromone pheromoneCourant) {
 		this.pheromoneCourant = pheromoneCourant;
 	}
 	
@@ -112,10 +112,18 @@ public class FourmiChef extends Fourmi implements Runnable, Observer{
 	 */
 	@Override
 	public void eclosion() {
-		
+		System.out.println("Eclosion Chef" + this.getIdFourmi());
 		Thread nouveauThread = new Thread(this);
 		nouveauThread.start();
 		//appel la fonction run
+		
+	}
+	
+	/**
+	 * Methode permettant de retourner a cote de la fourmiliere
+	 */
+	public void retournerFourmiliere(){
+		// TODO : determiner l'endroit ou on se situe et retourne a la fourmiliere
 		
 	}
 	
@@ -132,9 +140,7 @@ public class FourmiChef extends Fourmi implements Runnable, Observer{
 		
 		int nextDeplacementX = this.getPosX()+deplacementX;
 		int nextDeplacementY = this.getPosY()+deplacementY;
-		
-		System.out.println("FS"+this.getIdFourmi()+": " + deplacementX +" "+ deplacementY);
-		
+				
 		// test si on est encore sur le terrain ou a +/- de distance
 		// de la fourmilliere (de la reine)
 		if (nextDeplacementX < this.getFkTerrain().getNbLigne() 
@@ -156,34 +162,11 @@ public class FourmiChef extends Fourmi implements Runnable, Observer{
 	}
 	
 	/**
-	 * Methode permettant de retourner a cote de la fourmiliere
-	 */
-	public void retournerFourmiliere(){
-		// TODO : determiner l'endroit ou on se situe et retourne a la fourmiliere
-		
-	}
-	
-	/**
 	 * Methode permettant a une fourmi d'arreter son existance
 	 */
 	public void pheromoneMourir(){
 		// TODO : mettre fin au thread de la fourmi Soldat
 		// TODO : informer la fourmi chef qu'on est mort
-	}
-	
-	/**
-	 * Methode permettant a une fourmi d'aller chercher de la nourriture
-	 */
-	public void pheromoneNourriture(){
-		// TODO : parcourir la map et ramener la nourriture si plein
-		// puis repartir a la recherche
-	}
-	
-	/**
-	 * Methode permettant a une fourmi si elle est soldat d'attaquer
-	 */
-	public void pheromoneAttaquer(){
-		// TODO : si une fourmi est sur la cellule en cours, attaquer
 	}
 
 	/**
@@ -192,45 +175,30 @@ public class FourmiChef extends Fourmi implements Runnable, Observer{
 	@Override
 	public synchronized void run() {
 		// TODO : verifier si ca fonctionne autours de la fourmiliere
-		
-		int i = 0;
-		int maxMouvements = 4;
 
-		while(i < maxMouvements){
+		while(true){
 			
 			switch(this.pheromoneCourant){
 				case RIEN:
-					// TODO : une fourmi chef ne doit pas chercher de nourriture
-					System.out.println("Chef : RIEN");
+					// TODO : ne rien faire sur place
 					break;
 				case VIVRE:
-					// TODO : tourner autours de la fourmiliere
-					System.out.println("Chef : VIVRE");
+				case NOURRITURE:
+				case ATTAQUER:
+					// TODO : si pas a cote de la fourmiliere, revenir sur position Reine
 					this.pheromoneVivre();
 					break;
 				case MOURIR:
 					// TODO : fourmi doit mourir, quitter le thread ?
-					System.out.println("Chef : MOURIR");
 					this.pheromoneMourir();
-					break;
-				case ATTAQUER:
-					// TODO : une fourmi chef ne doit pas attaquer
-					System.out.println("Chef : ATTAQUER");
-					this.pheromoneAttaquer();
-					break;
-				case NOURRITURE:
-					// TODO : une fourmi chef ne doit pas chercher de nourriture
-					System.out.println("Chef : NOURRITURE");
-					this.pheromoneNourriture();
 					break;
 				default:
 					System.out.println("WARNING: Update Chef, Message pheromone inconnu.");
+					this.setPheromoneCourant(EnumPheromone.RIEN);
 					break;
 			
 			}
 			
-			i++;
-						
 		}
 		
 	}
@@ -238,7 +206,7 @@ public class FourmiChef extends Fourmi implements Runnable, Observer{
 	@Override
 	public void update(Observable o, Object arg) {
 		// TODO Tester les differents messages recu
-		
+				
 		// Cast de l'objet recu au bon format
 		EnumPheromone pheromoneRecu = (EnumPheromone)arg;
 		
@@ -246,9 +214,10 @@ public class FourmiChef extends Fourmi implements Runnable, Observer{
 			
 			// Met a jour le message courant
 			this.setPheromoneCourant(pheromoneRecu);
+			System.out.println("Chef:" + pheromoneRecu);
 			
 		} else{
-			System.out.println("WARNING: Update Soldat, Message pheromone null.");
+			System.out.println("WARNING: Update Chef, Message pheromone null.");
 		}
 		
 	}
