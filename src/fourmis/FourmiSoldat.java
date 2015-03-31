@@ -63,8 +63,6 @@ public class FourmiSoldat extends Fourmi implements Runnable, Observer{
 		this.pheromoneCourant = pheromoneCourant;
 	}
 	
-	// TODO : toto
-
 	/* ===========================ACTIONS============================= */
 	
 	@Override
@@ -178,7 +176,45 @@ public class FourmiSoldat extends Fourmi implements Runnable, Observer{
 	 * Methode permettant de retourner a cote de la fourmiliere
 	 */
 	public void retournerFourmiliere(){
-		// TODO : determiner l'endroit ou on se situe et retourne a la fourmiliere
+		
+		// Tant qu'on n'est pas sur la fourmiliere/reine
+		while (this.getPosX() != this.getFkFourmiChef().getFkFourmiReine().getPosX() 
+			&& this.getPosY() != this.getFkFourmiChef().getFkFourmiReine().getPosY()) {
+			
+			// Si on est x > reine et y > reine : bas droit
+			if (this.getPosX() > this.getFkFourmiChef().getFkFourmiReine().getPosX()
+					&& this.getPosY() > this.getFkFourmiChef().getFkFourmiReine().getPosY()) {
+				this.setPosX(this.getPosX()-1);
+				this.setPosY(this.getPosY()-1);
+			} else {
+				
+				// Si x < reine et y > reine : bas gauche
+				if (this.getPosX() < this.getFkFourmiChef().getFkFourmiReine().getPosX()
+					&& this.getPosY() > this.getFkFourmiChef().getFkFourmiReine().getPosY()) {
+					this.setPosX(this.getPosX()+1);
+					this.setPosY(this.getPosY()-1);
+					
+				} else {
+					
+					// Si x < reine et y < reine : haut gauche
+					if (this.getPosX() < this.getFkFourmiChef().getFkFourmiReine().getPosX()
+						&& this.getPosY() < this.getFkFourmiChef().getFkFourmiReine().getPosY()) {
+						this.setPosX(this.getPosX()+1);
+						this.setPosY(this.getPosY()+1);
+						
+					} else {
+						
+						// Si x > reine et y < reine : haut droit
+						this.setPosX(this.getPosX()-1);
+						this.setPosY(this.getPosY()+1);
+						
+					}
+				}
+			}
+			
+		}
+		
+		// TODO : Ajouter un timer pour "voir" les deplacements
 		
 	}
 	
