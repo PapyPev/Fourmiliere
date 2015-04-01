@@ -3,6 +3,8 @@ package environnements;
 import java.util.ArrayList;
 import java.util.Random;
 
+import environnements.Cellule.EnumCellule;
+
 /**
  * 
  * @author pev
@@ -31,7 +33,21 @@ public class Terrain {
 		this.idTerrain = idTerrain;
 		this.nbLigne = nbLigne;
 		this.nbColonne = nbColonne;
-		this.indexTerrain = initialiserTerrain(nbLigne, nbColonne);
+		this.indexTerrain = initialiserTerrainRandom(nbLigne, nbColonne);
+	}
+	
+	/**
+	 * Constructeur d'un terrain
+	 * @param idTerrain : identifiant du terrain
+	 * @param nbLigne : nombre de cellule en ligne
+	 * @param nbColonne : nombre de celule en colonne
+	 * @param typeCellule : type de cellule du terrain
+	 */
+	public Terrain(int idTerrain, int nbLigne, int nbColonne, EnumCellule typeCellule){
+		this.idTerrain = idTerrain;
+		this.nbLigne = nbLigne;
+		this.nbColonne = nbColonne;
+		this.indexTerrain = initialiserTerrain(nbLigne, nbColonne, typeCellule);
 	}
 	
 	/* ==========================G/S================================== */
@@ -67,12 +83,30 @@ public class Terrain {
 	/* ===========================ACTIONS============================= */
 
 	/**
+	 * Methode permettant de generer un terrain avec des cellules typees
+	 * @param nbLigne : nombre de cellule en ligne
+	 * @param nbColonne : nombre de cellule en colonne
+	 * @param typeCellule : type du terrain
+	 * @return
+	 */
+	public ArrayList<ArrayList<Cellule>> initialiserTerrain(int nbLigne, int nbColonne, EnumCellule typeCellule){
+		//TODO : Init terrain : faire un init sur une cellule
+		
+		// Configuration du Terrain a retourner
+		ArrayList<ArrayList<Cellule>> indexTerrain = new ArrayList<ArrayList<Cellule>>();
+		
+		//TODO : faire des proba pour ne pas avoir QUE ce type de cellule
+		
+		return indexTerrain;
+	}
+	
+	/**
 	 * Methode permettant de generer un terrain avec des cellules aleatoires
 	 * @param nbLigne nombre de ligne du terrain
 	 * @param nbColonne nombre de colonne du terrain
-	 * @return 
+	 * @return un indexTerrain
 	 */
-	public ArrayList<ArrayList<Cellule>> initialiserTerrain(int nbLigne, int nbColonne){
+	public ArrayList<ArrayList<Cellule>> initialiserTerrainRandom(int nbLigne, int nbColonne){
 		//TODO : Init terrain : faire du random sur les cellules
 		
 		// Configuration du Terrain a retourner
@@ -85,6 +119,7 @@ public class Terrain {
 			ArrayList<Cellule> tmpLigne = new ArrayList<>();
 			
 			for (int i = 0; i < nbLigne; i++) {
+				// avec juste un id, cree un terrain avec des cellule random
 				Cellule nouvelleCellule = new Cellule(i);
 				tmpLigne.add(nouvelleCellule);
 			}

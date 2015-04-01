@@ -138,7 +138,6 @@ public class FourmiSoldat extends Fourmi implements Runnable, Observer{
 	 */
 	@Override
 	public void eclosion() {
-		System.out.println("Eclosion Soldat" + this.getIdFourmi());
 		Thread nouveauThread = new Thread(this);
 		nouveauThread.start(); //appel la fonction run()
 	}
@@ -148,7 +147,7 @@ public class FourmiSoldat extends Fourmi implements Runnable, Observer{
 	 * de la fourmiliere
 	 */
 	public void pheromoneVivre(){
-		// mouvements aleatoire autours de la fourmiliere
+		// Mouvements aleatoire autours de la fourmiliere
 		Random r1 = new Random();
 		Random r2 = new Random();
 		int deplacementX = r1.nextInt(1 + 1) -1;
@@ -177,9 +176,9 @@ public class FourmiSoldat extends Fourmi implements Runnable, Observer{
 	}
 	
 	/**
-	 * Methode permettant de retourner a cote de la fourmiliere
+	 * Methode permettant de retourner aux cotes de sa reine
 	 */
-	public void retournerFourmiliere(){
+	public void retournerVoirSaReine(){
 		
 		// Tant qu'on n'est pas sur la fourmiliere/reine
 		while (this.getPosX() != this.getFkFourmiChef().getFkFourmiReine().getPosX() 
@@ -203,6 +202,52 @@ public class FourmiSoldat extends Fourmi implements Runnable, Observer{
 					// Si x < reine et y < reine : haut gauche
 					if (this.getPosX() < this.getFkFourmiChef().getFkFourmiReine().getPosX()
 						&& this.getPosY() < this.getFkFourmiChef().getFkFourmiReine().getPosY()) {
+						this.setPosX(this.getPosX()+1);
+						this.setPosY(this.getPosY()+1);
+						
+					} else {
+						
+						// Si x > reine et y < reine : haut droit
+						this.setPosX(this.getPosX()-1);
+						this.setPosY(this.getPosY()+1);
+						
+					}
+				}
+			}
+			
+		}
+		
+		// TODO : Ajouter un timer pour "voir" les deplacements
+		
+	}
+	
+	/**
+	 * Methode permettant de retourner aux cotes de son chef
+	 */
+	public void retournerVoirSonChef(){
+		
+		// Tant qu'on n'est pas sur la fourmiliere/reine
+		while (this.getPosX() != this.getFkFourmiChef().getPosX() 
+			&& this.getPosY() != this.getFkFourmiChef().getPosY()) {
+			
+			// Si on est x > reine et y > reine : bas droit
+			if (this.getPosX() > this.getFkFourmiChef().getPosX()
+					&& this.getPosY() > this.getFkFourmiChef().getPosY()) {
+				this.setPosX(this.getPosX()-1);
+				this.setPosY(this.getPosY()-1);
+			} else {
+				
+				// Si x < reine et y > reine : bas gauche
+				if (this.getPosX() < this.getFkFourmiChef().getPosX()
+					&& this.getPosY() > this.getFkFourmiChef().getPosY()) {
+					this.setPosX(this.getPosX()+1);
+					this.setPosY(this.getPosY()-1);
+					
+				} else {
+					
+					// Si x < reine et y < reine : haut gauche
+					if (this.getPosX() < this.getFkFourmiChef().getPosX()
+						&& this.getPosY() < this.getFkFourmiChef().getPosY()) {
 						this.setPosX(this.getPosX()+1);
 						this.setPosY(this.getPosY()+1);
 						
@@ -256,21 +301,18 @@ public class FourmiSoldat extends Fourmi implements Runnable, Observer{
 			
 			switch(this.pheromoneCourant){
 				case RIEN:
-					// TODO : une fourmi chef ne doit pas chercher de nourriture
+					// TODO : attendre une information
 					break;
 				case VIVRE:
-					// TODO : tourner autours de la fourmiliere
 					this.pheromoneVivre();
 					break;
 				case MOURIR:
 					this.setDureeVie(0);
 					break;
 				case ATTAQUER:
-					// TODO : une fourmi chef ne doit pas attaquer
 					this.pheromoneAttaquer();
 					break;
 				case NOURRITURE:
-					// TODO : une fourmi chef ne doit pas chercher de nourriture
 					this.pheromoneNourriture();
 					break;
 				default:
