@@ -54,9 +54,10 @@ public class Main {
 			lesFourmilieres.get(i).informerParPheromone(EnumPheromone.NOURRITURE);
 		}
 
+
+/*
 		
-		
-/*		System.out.println("Attente avant depart : None");
+		System.out.println("Attente avant depart : None");
 		System.out.println("Exploration Start : None");
 		System.out.println("Compter nombre de Nourriture : None");
 		

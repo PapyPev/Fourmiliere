@@ -122,8 +122,8 @@ public class FourmiSoldat extends Fourmi implements Runnable, Observer{
 	}
 
 	/**
-	 * Methode permettant de revenir a la fourmiliere et de deposer
-	 * la quantite de nourriture transportee tout en avertissant le chef
+	 * Methode permettant de deposer la quantite de nourriture transportee 
+	 * tout en avertissant le chef
 	 */
 	public void deposerNourriture(){
 		// Incremente la nourriture du chef
@@ -147,6 +147,13 @@ public class FourmiSoldat extends Fourmi implements Runnable, Observer{
 	 * de la fourmiliere
 	 */
 	public void pheromoneVivre(){
+		
+		// Retourner a la fourmiliere
+		if(this.getPosX() != this.getFkFourmiChef().getFkFourmiReine().getPosX()
+				&& this.getPosY() != this.getFkFourmiChef().getFkFourmiReine().getPosY()){
+			this.retournerVoirSaReine();
+		}
+		
 		// Mouvements aleatoire autours de la fourmiliere
 		Random r1 = new Random();
 		Random r2 = new Random();
@@ -271,20 +278,96 @@ public class FourmiSoldat extends Fourmi implements Runnable, Observer{
 	 * Methode permettant a une fourmi d'aller chercher de la nourriture
 	 */
 	public void pheromoneNourriture(){
-		// TODO : parcourir la map et ramener la nourriture si plein
-		// puis repartir a la recherche
+		// TODO : parcourir la map et ramener la nourriture si plein puis repartir a la recherche
 		
-		// Recherche la cellule ideale a 2 cellules autours
-		// Si il y a une cellule idealle
-			// Recuperer les coordonnees de la cellule
-			// se deplacer jusqu'a la cellule
-		// Sinon
-			//
+		// TODO : Tant que le pheromone courant est la recherche de nourriture
+			
+			boolean isPheromone = false;
+			int nextPosX = -1-this.DIST_VISUELLE;
+			int nextPosY = -1-this.DIST_VISUELLE;
+		
+			// Regarder a DIST_VUE s'il y a une presence de pheromone
+			// Parcours des cellules autours de la fourmi : ligne
+			while(isPheromone == true || nextPosX > this.DIST_VISUELLE){
+				nextPosX++;
+				
+				// Parcours des cellules autours de la fourmi : colonne
+				while(isPheromone == true || nextPosY > this.DIST_VISUELLE){
+					nextPosY++;
+					
+					// Detection de la presence de pheromone
+					if(this.getFkTerrain().getACellule(this.getPosX()+nextPosX, this.getPosY()+nextPosY).isPresencePheromone()){
+						isPheromone = true;
+					}
+					
+				}
+				
+			}
+		
+			// Il y a presence de pheromone autours
+			if (isPheromone) {
+				
+				// TODO : Suivre le chemin des pheromones (methode ?)
+				
+			}
+			
+			// Il n'y a pas de pheromone autours
+			else {
+				
+				// Recherche la cellule ideale a DIST_VUE cellules autours (qt++)
+				int qtNourritureMemorisee = 0;
+				int nextPosXMemorisee = 0;
+				int nextPosYMemorisee = 0;
+				
+				for (int i = (-1-this.DIST_VISUELLE); i < this.DIST_VISUELLE; i++) {
+					for (int j = (-1-this.DIST_VISUELLE); j < this.DIST_VISUELLE; j++) {
+						
+						int qtNourritureVue = this.getFkTerrain().getACellule(this.getPosX()+i, this.getPosY()+j).getQtNourritureCourante();
+						
+						// Si la quantite de nourriture a (+i, +j) est superieure a la quantite deja vue
+						if(qtNourritureMemorisee < this.getFkTerrain().getACellule(this.getPosX()+i, this.getPosY()+j).getQtNourritureCourante()){
+							
+							// memorisation des informations
+							qtNourritureMemorisee = qtNourritureVue;
+							nextPosXMemorisee = i;
+							nextPosYMemorisee = j;
+							
+						}
+						
+					}
+				}
+				
+				// Si il y a une cellule ideale
+				if (nextPosXMemorisee != 0 || nextPosYMemorisee != 0) {
+					
+					// On se deplace sur la cellule
+					
+					
+				}
+				
+				// S'il n'y a pas de cellule ideale
+				else {
+					// TODO : se deplacer random +/- 1 sur x et y
+					// TODO : relancer l'algo
+				}
+				
+			}
+
+			
+			// Recuperer la nourriture
+			
+			// Si qtRestante = 0
+				// retourner a la fourmiliere
+			// Sinon
+				// retourner a la fourmiliere en deposant des pheromones
+		
+			// avertir le chef de la qt
+
 		
 	}
 	
 	/**
-	 * Methode permettant a une fourmi si elle est soldat d'attaquer
+	 * Methode permettant a une fourmi, si elle est soldat, d'attaquer
 	 */
 	public void pheromoneAttaquer(){
 		// TODO : si une fourmi est sur la cellule en cours, attaquer

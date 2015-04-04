@@ -1,4 +1,4 @@
-package interfaces;
+package outils;
 
 import java.util.Observable;
 
@@ -6,7 +6,7 @@ import java.util.Observable;
  * 
  * @author pev, fred
  * @category cours java
- * @version 20150331
+ * @version 20150404
  *
  */
 public class Pheromone extends Observable{

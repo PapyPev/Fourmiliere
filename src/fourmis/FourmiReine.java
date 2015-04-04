@@ -1,9 +1,8 @@
 package fourmis;
-import interfaces.*;
-
 import java.util.ArrayList;
 import java.util.Random;
 
+import outils.*;
 import environnements.Terrain;
 
 /**

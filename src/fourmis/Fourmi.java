@@ -1,5 +1,5 @@
 package fourmis;
-import interfaces.Oeuf;
+import outils.Oeuf;
 import environnements.Terrain;
 
 /**
