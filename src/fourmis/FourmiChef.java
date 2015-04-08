@@ -5,6 +5,7 @@ import java.util.Observer;
 
 import environnements.Terrain;
 import fourmis.FourmiReine.EnumPheromone;
+import outils.Combattant;
 
 /**
  * 
@@ -13,7 +14,7 @@ import fourmis.FourmiReine.EnumPheromone;
  * @version 20150331
  *
  */
-public class FourmiChef extends Fourmi implements Runnable, Observer{
+public class FourmiChef extends Fourmi implements Combattant, Runnable, Observer{
 	
 	/* ===========================ATRB================================ */
 
@@ -166,6 +167,11 @@ public class FourmiChef extends Fourmi implements Runnable, Observer{
 			System.out.println("WARNING: Update Chef, Message pheromone null.");
 		}
 		
+	}
+	
+	@Override
+	public void combattantAttaquer(){
+		// TODO : chef, attaquer
 	}
 
 }

@@ -6,6 +6,7 @@ import java.util.Random;
 
 import environnements.Terrain;
 import fourmis.FourmiReine.EnumPheromone;
+import outils.Combattant;
 
 /**
  * 
@@ -14,7 +15,7 @@ import fourmis.FourmiReine.EnumPheromone;
  * @version 20150331
  *
  */
-public class FourmiSoldat extends Fourmi implements Runnable, Observer{
+public class FourmiSoldat extends Fourmi implements Combattant, Runnable, Observer{
 	
 	/* ===========================ATRB================================ */
 	
@@ -268,9 +269,9 @@ public class FourmiSoldat extends Fourmi implements Runnable, Observer{
 				}
 			}
 			
+			// TODO : Ajouter un timer pour "voir" les deplacements
+
 		}
-		
-		// TODO : Ajouter un timer pour "voir" les deplacements
 		
 	}
 	
@@ -428,6 +429,11 @@ public class FourmiSoldat extends Fourmi implements Runnable, Observer{
 			System.out.println("WARNING: Update Soldat, Message pheromone null.");
 		}
 		
+	}
+	
+	@Override
+	public void combattantAttaquer(){
+		// TODO : soldat, attaquer
 	}
 	
 }

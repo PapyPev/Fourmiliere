@@ -4,11 +4,9 @@ package outils;
  * 
  * @author pev, fred
  * @category cours java
- * @version 20150404
+ * @version 20150408
  *
  */
-public interface Combat {
+public class Combat {
 
-	// TODO : lister les methodes necessaires aux combats
-	
 }
