@@ -25,7 +25,7 @@ public class FourmiReine extends Fourmi implements Runnable {
 	private ArrayList<Oeuf> oeufAEclore = new ArrayList<>();
 	private Pheromone unPheromone;
 	
-	private ArrayList<FourmiSoldat> mesFourmis = new ArrayList<>();
+	private ArrayList<Affichable> mesFourmis = new ArrayList<>();
 	
 	/* ===========================CONST================================ */
 	
@@ -86,10 +86,10 @@ public class FourmiReine extends Fourmi implements Runnable {
 		this.oeufAEclore = oeufsAEclore;
 	}
 	
-	public ArrayList<FourmiSoldat> getMesFourmis() {
+	public ArrayList<Affichable> getMesFourmis() {
 		return mesFourmis;
 	}
-	public void setMesFouris(ArrayList<FourmiSoldat> mesFourmis) {
+	public void setMesFouris(ArrayList<Affichable> mesFourmis) {
 		this.mesFourmis = mesFourmis;
 	}
 	
@@ -186,8 +186,9 @@ public class FourmiReine extends Fourmi implements Runnable {
 	/**
 	 * Methode permettant d'appeller la fonction d'eclosion de la classe Oeufs.
 	 * La methode de la classe oeufs permet de lancer un thread par oeufs.
+	 * @return 
 	 */
-	public void eclosion(){
+	public synchronized void eclosion(){
 		
 		// Eclore les oeufs en creant un thread
 		for (int i = 0; i < this.oeufAEclore.size(); i++) {

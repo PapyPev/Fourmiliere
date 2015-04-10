@@ -15,7 +15,7 @@ public abstract class Fourmi implements Oeuf{
 
 	
 	private int idFourmi;
-	public static enum EnumFourmi {ROUGE, NOIR, JAUNE}; // classe fille seulement
+	public static enum EnumFourmi {BLEU, NOIR, JAUNE}; // classe fille seulement
 	public EnumFourmi typeFourmi;
 	private Terrain fkTerrain;
 	private boolean combattant;
@@ -140,12 +140,15 @@ public abstract class Fourmi implements Oeuf{
 	
 	/**
 	 * Methode permettant de se deplacer aux coordonnees x, y
-	 * @param x
-	 * @param y
+	 * @param x : coordonnees en ligne
+	 * @param y : coordonnees en colonne
+	 * @throws InterruptedException 
 	 */
-	public void seDeplacer(int x, int y){
+	public void seDeplacer(int x, int y) throws InterruptedException{
 		this.posX = x;
 		this.posY = y;
+		System.out.println("x:" +x+ " y:"+y);
+		wait(500);
 	}
 
 }
