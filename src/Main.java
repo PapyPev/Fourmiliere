@@ -1,26 +1,89 @@
+import java.applet.Applet;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.util.ArrayList;
 import java.util.Random;
 
 import environnements.Terrain;
+import environnements.Cellule.EnumCellule;
 import fourmis.FourmiReine;
-import fourmis.FourmiReine.EnumPheromone;
-import static environnements.Cellule.EnumCellule;
 
 
-public class Main {
+public class Main extends Applet implements Runnable {
+
+	/**
+	 * Serial ID et attributs
+	 */
+	private static final long serialVersionUID = 1L;
 	
-	public static void main(String[] args) {
+	Terrain monTerrain;
+	
+	// Parametres de lancement
+	ArrayList<FourmiReine> lesFourmilieres = new ArrayList<FourmiReine>();
+	int lignes = 30;
+	int colonnes = 30;
+	int nbReine = 1;
+	int nbOeufParReine = 5; //mini : 5
+	double probaOeufChef = 0.1;
+    
+	// Definition des Sols
+	private Image   imgSolNulle;
+	private Image   imgSolArbre;
+	private Image   imgSolBoue;
+	private Image   imgSolPlante;
+	private Image   imgSolTerrier;
+	private Image   imgSolFourmiliere;
 		
-		ArrayList<FourmiReine> lesFourmilieres = new ArrayList<FourmiReine>();
+	// Definition des Fourmis
+    private Image   imgNoirSoldat;
+	private Image   imgNoirChef;
+	private Image   imgNoirReine;
+	
+	
+    private Thread  thread;   //thread de controle
+    
+    @Override
+	public void start() {
+		//necessaire pour demarrer l'animation
+		if (thread==null){
+			thread=new Thread(this);
+			thread.start();
+		}
+	}
+
+	@Override
+	public void run() {
+		// Actualisation de l'interface graphique
+		repaint();
 		
-		int lignes = 30;
-		int colonnes = 30;
-		int nbReine = 1;
-		int nbOeufParReine = 5; //mini : 5
-		double probaOeufChef = 0.1;
+	}
+	
+	/**
+	 * Initialisations, appelee automatiquement
+	 */
+	@Override
+	public void init() {
 		
-		// Initialisation du terrain
-		Terrain monTerrain = new Terrain(1, lignes, colonnes);
+		// Definition de la fenetre d'affichage
+		this.setSize(lignes*22, colonnes*22);
+		
+		// Chargement des types de terrain
+		imgSolNulle=getImage(getCodeBase(),"./img/solNulle.png");
+		imgSolArbre=getImage(getCodeBase(),"./img/solArbre.png");
+		imgSolBoue=getImage(getCodeBase(),"./img/solBoue.png");
+		imgSolFourmiliere=getImage(getCodeBase(),"./img/solFourmiliere.png");
+		imgSolPlante=getImage(getCodeBase(),"./img/solPlante.png");
+		imgSolTerrier=getImage(getCodeBase(),"./img/solTerrier.png");
+	 	
+		// Chargement des types d'images
+		imgNoirSoldat=getImage(getCodeBase(),"./img/noirSoldat.png");
+		imgNoirChef=getImage(getCodeBase(),"./img/noirChef.png");
+		imgNoirReine=getImage(getCodeBase(),"./img/noirReine.png");
+		imgSolFourmiliere=getImage(getCodeBase(),"./img/solFourmiliere.png");
+		
+		// Initialisation du terrain - Pas besoin de type si random
+		monTerrain = new Terrain(1, lignes, colonnes, EnumCellule.PLANTE);
+		
 
 		// Initialisation des Fourmilieres / Reines
 		for (int i = 0; i < nbReine; i++) {
@@ -43,57 +106,68 @@ public class Main {
 			
 		}
 		
-		// Eclosion des oeufs
+		//Eclosion des oeufs
 		for (int i = 0; i < lesFourmilieres.size(); i++){
 			lesFourmilieres.get(i).eclosion();
 			
 		}
+	}
+	
+	/**
+	 * Methode appellee pour redessiner l'interface, appelee par repaint()
+	 */
+	@Override
+	public  void  paint(Graphics g) {
 		
-		// Informer aux fourmis d'aller chercher de la nourriture
-		for (int i = 0; i < lesFourmilieres.size(); i++){
-			lesFourmilieres.get(i).informerParPheromone(EnumPheromone.NOURRITURE);
-		}
-
-
-/*
-		
-		System.out.println("Attente avant depart : None");
-		System.out.println("Exploration Start : None");
-		System.out.println("Compter nombre de Nourriture : None");
-		
-		System.out.println("----------- Terrain -----------");
-		
+		// Affichage du terrain selon le type de cellule
 		for (int i = 0; i < monTerrain.getNbLigne(); i++) {
 			for (int j = 0; j < monTerrain.getNbColonne(); j++) {
-				
-				boolean celluleVide = true;
-				for (int k = 0; k < lesFourmilieres.size(); k++) {
-					if (lesFourmilieres.get(k).getPosX() == i && lesFourmilieres.get(k).getPosY() == j) {
-						System.out.print("["+lesFourmilieres.get(k).getIdFourmi()+"]");
-						celluleVide = false;
-					}
+				switch(monTerrain.getACellule(i, j).getTypeCellule()){
+					case ARBRE:
+						g.drawImage(imgSolArbre,lignes+i*20,colonnes+j*20,this);
+						break;
+					case BOUE:
+						g.drawImage(imgSolBoue,lignes+i*20,colonnes+j*20,this);
+						break;
+					case PLANTE:
+						g.drawImage(imgSolPlante,lignes+i*20,colonnes+j*20,this);
+						break;
+					case TERRIER:
+						g.drawImage(imgSolTerrier,lignes+i*20,colonnes+j*20,this);
+						break;
+					case FOURMILIERE:
+						g.drawImage(imgSolFourmiliere,lignes+i*20,colonnes+j*20,this);
+						break;
+					case NULLE:
+						g.drawImage(imgSolNulle,lignes+i*20,colonnes+j*20,this);
+						break;
 				}
-				if (celluleVide) {
-					System.out.print("[ ]");
-				}
-				
 			}
-			System.out.print("\n");
 		}
 		
-		System.out.println("-------- Statistiques/R --------");
+		// Affichage des fourmis
+		for (int i = 0; i < lesFourmilieres.size(); i++) {
+			int posX, posY;
+			
+			// Affichage Reine
+			posX = lesFourmilieres.get(i).getPosX();
+			posY = lesFourmilieres.get(i).getPosY();
+			g.drawImage(imgNoirReine,posX*20,posY*20,this);
+			
+			// Affichage des fourmis de la reine
+			for (int j = 0; j < lesFourmilieres.get(i).getMesFourmis().size(); j++) {
+				
+				// Si elles ont encore leur point de vie
+				if (lesFourmilieres.get(i).getMesFourmis().get(j).getDureeVie() > 0) {
+					posX = lesFourmilieres.get(i).getMesFourmis().get(j).getPosX();
+					posY = lesFourmilieres.get(i).getMesFourmis().get(j).getPosY();
+					g.drawImage(imgNoirSoldat,posX*20,posY*20,this);
+				}
+			}
+		}
 		
-		int nbChef = (int)Math.round(nbOeufParReine*probaOeufChef);
-		int nbSoldat = (int)Math.round((double)(nbOeufParReine-nbChef)/(double)nbChef);
-		System.out.println("Nombre de Reine: " + nbReine);
-		System.out.println("Nombre d'Oeufs: " + nbOeufParReine);
-		System.out.println("Nombre de Chefs: " + nbChef);
-		System.out.println("Nombre de Soldats: "+ nbSoldat);
 
-		System.out.println("------------ Ending ------------");
-
-*/
-		
+			
 	}
 
 }

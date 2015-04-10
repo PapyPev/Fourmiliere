@@ -25,6 +25,8 @@ public class FourmiReine extends Fourmi implements Runnable {
 	private ArrayList<Oeuf> oeufAEclore = new ArrayList<>();
 	private Pheromone unPheromone;
 	
+	private ArrayList<FourmiSoldat> mesFourmis = new ArrayList<>();
+	
 	/* ===========================CONST================================ */
 	
 	/**
@@ -73,7 +75,6 @@ public class FourmiReine extends Fourmi implements Runnable {
 	public EnumPheromone getTypePheromone() {
 		return typePheromone;
 	}
-
 	public void setTypePheromone(EnumPheromone typePheromone) {
 		this.typePheromone = typePheromone;
 	}
@@ -81,9 +82,15 @@ public class FourmiReine extends Fourmi implements Runnable {
 	public ArrayList<Oeuf> getOeufAEclore() {
 		return oeufAEclore;
 	}
-
 	public void setOeufAEclore(ArrayList<Oeuf> oeufsAEclore) {
 		this.oeufAEclore = oeufsAEclore;
+	}
+	
+	public ArrayList<FourmiSoldat> getMesFourmis() {
+		return mesFourmis;
+	}
+	public void setMesFouris(ArrayList<FourmiSoldat> mesFourmis) {
+		this.mesFourmis = mesFourmis;
 	}
 	
 	/* ===========================ACTIONS============================= */
@@ -136,6 +143,7 @@ public class FourmiReine extends Fourmi implements Runnable {
 			
 			// Ajout des oeufs a eclore dans l'AL
 			this.oeufAEclore.add(uneFourmiChef);
+			//this.mesFourmis.add(uneFourmiChef);
 			
 			// Ajout d'un observer vers la reine pour les chefs
 			this.unPheromone.addObserver(uneFourmiChef);
@@ -153,6 +161,7 @@ public class FourmiReine extends Fourmi implements Runnable {
 				
 				// Ajouter des oeufs a eclore dans l'AL
 				this.oeufAEclore.add(uneFourmiSoldat);
+				this.mesFourmis.add(uneFourmiSoldat);
 				
 				// Ajout d'un observer vers le chef pour les soldats
 				this.unPheromone.addObserver(uneFourmiSoldat);

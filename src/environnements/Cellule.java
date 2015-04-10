@@ -66,6 +66,20 @@ public class Cellule {
 		this.presenceCombattant = false;
 	}
 	
+	/**
+	 * Constructeur d'une cellule d'un type
+	 * @param idCellule : identifiant de la cellule
+	 */
+	public Cellule(int idCellule, EnumCellule typeCellule) {
+		this.idCellule = idCellule;
+		this.typeCellule = typeCellule;
+		this.setQtNourritureSelontypeCell(this.typeCellule);
+		this.qtNourritureCourante = qtNourritureNative;
+		this.setDureeRechargeSelonTypeCell(this.typeCellule);
+		this.presencePheromone = false;
+		this.presenceCombattant = false;
+	}
+	
 	/* ==========================G/S=================================== */
 
 	public int getIdCellule() {

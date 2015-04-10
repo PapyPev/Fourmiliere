@@ -95,7 +95,32 @@ public class Terrain {
 		// Configuration du Terrain a retourner
 		ArrayList<ArrayList<Cellule>> indexTerrain = new ArrayList<ArrayList<Cellule>>();
 		
-		//TODO : faire des proba pour ne pas avoir QUE ce type de cellule
+		int rand;
+		EnumCellule nextCell;
+		
+		// Ligne
+		for (int j = 0; j < nbColonne; j++) {
+			
+			// Colonne a l'interieur
+			ArrayList<Cellule> tmpLigne = new ArrayList<>();
+			
+			for (int i = 0; i < nbLigne; i++) {
+				// avec juste un id, cree un terrain avec des cellule types
+				
+				Random r1 = new Random();
+				rand = 0 + r1.nextInt(3-0);
+				if (rand == 0) {
+					nextCell = typeCellule;
+				} else {
+					nextCell = EnumCellule.NULLE;
+				}
+				Cellule nouvelleCellule = new Cellule(i, nextCell);
+				tmpLigne.add(nouvelleCellule);
+			}
+			
+			indexTerrain.add(tmpLigne);
+			
+		}
 		
 		return indexTerrain;
 	}
