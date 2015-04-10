@@ -144,11 +144,10 @@ public abstract class Fourmi implements Oeuf{
 	 * @param y : coordonnees en colonne
 	 * @throws InterruptedException 
 	 */
-	public void seDeplacer(int x, int y) throws InterruptedException{
+	public synchronized void seDeplacer(int x, int y) throws InterruptedException{
 		this.posX = x;
 		this.posY = y;
-		System.out.println("x:" +x+ " y:"+y);
-		wait(500);
+		wait(300);
 	}
 
 }

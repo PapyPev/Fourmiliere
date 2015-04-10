@@ -1,4 +1,5 @@
 import java.applet.Applet;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.util.ArrayList;
@@ -23,8 +24,8 @@ public class Main extends Applet implements Runnable {
 	ArrayList<FourmiReine> lesFourmilieres = new ArrayList<FourmiReine>();
 	int lignes = 50;
 	int colonnes = 50;
-	int nbReine = 3;
-	int nbOeufParReine = 30; //mini : 5
+	int nbReine = 1;
+	int nbOeufParReine = 5; //mini : 5
 	double probaOeufChef = 0.1;
     
 	// Definition des images
@@ -132,7 +133,7 @@ public class Main extends Applet implements Runnable {
 		
 		// Informer aux fourmis d'aller chercher de la nourriture
 		for (int i = 0; i < lesFourmilieres.size(); i++){
-			lesFourmilieres.get(i).informerParPheromone(EnumPheromone.NOURRITURE);
+			lesFourmilieres.get(i).informerParPheromone(EnumPheromone.VIVRE);
 		}
 
 		
@@ -146,6 +147,11 @@ public class Main extends Applet implements Runnable {
 	public  void  paint(Graphics g) {
 		
 		while(true){
+			
+			//g.setColor(Color.PINK);
+
+			//g.fillOval(i*13, j*10, FR.getTerrain().getCase(i, j).getNourriture()/10, FR.getTerrain().getCase(i, j).getNourriture()/10);
+			
 		
 			// Affichage du terrain selon le type de cellule
 			for (int i = 0; i < monTerrain.getNbLigne(); i++) {
@@ -218,9 +224,13 @@ public class Main extends Applet implements Runnable {
 						switch(lesFourmilieres.get(i).getMesFourmis().get(j).getFkFourmiReine().getTypeFourmi()){
 						case BLEU:
 							g.drawImage(imgBleuSoldat,posX*tailleImage,posY*tailleImage,this);
+							g.setColor(Color.PINK);
 							break;
 						case JAUNE:
 							g.drawImage(imgJauneSoldat,posX*tailleImage,posY*tailleImage,this);
+							g.setColor(Color.PINK);
+							g.fillOval(tailleImage*posX, tailleImage*posY, 10,10);
+
 							break;
 						case NOIR:
 							g.drawImage(imgNoirSoldat,posX*tailleImage,posY*tailleImage,this);

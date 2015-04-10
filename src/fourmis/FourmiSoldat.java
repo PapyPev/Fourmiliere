@@ -79,9 +79,7 @@ public class FourmiSoldat extends Fourmi implements Affichable, Combattant, Runn
 	 * sur la cellule en cours
 	 */
 	public void prendreNourriture(){
-		// TODO : recuperer la nourriture sur la cellule en cours
-		// incrementer la qt transportee et reduire la qt de cellule
-		
+
 		// Recupere la qt de nourriture sur la cellule
 		int qtCell = this.getFkTerrain().getACellule(this.getPosX(), this.getPosY()).getQtNourritureCourante();
 		
@@ -149,13 +147,13 @@ public class FourmiSoldat extends Fourmi implements Affichable, Combattant, Runn
 	 * de la fourmiliere
 	 * @throws InterruptedException 
 	 */
-	public void pheromoneVivre() throws InterruptedException{
+	public synchronized void pheromoneVivre() throws InterruptedException{
 		
 		// Retourner a la fourmiliere
-		if(this.getPosX() != this.getFkFourmiChef().getFkFourmiReine().getPosX()
+		/*if(this.getPosX() != this.getFkFourmiChef().getFkFourmiReine().getPosX()
 				&& this.getPosY() != this.getFkFourmiChef().getFkFourmiReine().getPosY()){
 			this.retournerVoirSaReine();
-		}
+		}*/
 		
 		// Mouvements aleatoire autours de la fourmiliere
 		Random r1 = new Random();
@@ -163,28 +161,51 @@ public class FourmiSoldat extends Fourmi implements Affichable, Combattant, Runn
 		int deplacementX = r1.nextInt(1 + 1) -1;
 		int deplacementY = r2.nextInt(1 + 1) -1;
 		
+		System.out.println(this.getIdFourmi() + ":"+ "x"+this.getPosX()+" y:"+this.getPosY());
 		int nextDeplacementX = this.getPosX()+deplacementX;
 		int nextDeplacementY = this.getPosY()+deplacementY;
+		System.out.println(this.getIdFourmi() + ":"+ "xa"+nextDeplacementX+" ya:"+nextDeplacementY);
 		
 		// de la fourmilliere (de la reine)
-		if (nextDeplacementX < this.getFkTerrain().getNbLigne() 
-				&& nextDeplacementX >= 0 
-				&& (nextDeplacementX <= (this.getFkFourmiChef().getFkFourmiReine().getPosX()+this.DIST_MAX_REINE)
-					|| nextDeplacementX <= (this.getFkFourmiChef().getFkFourmiReine().getPosX()-this.DIST_MAX_REINE))
+//		if (nextDeplacementX < this.getFkTerrain().getNbLigne() 
+//				&& nextDeplacementX >= 0 
+//				&& (nextDeplacementX <= (this.getFkFourmiChef().getFkFourmiReine().getPosX()+this.DIST_MAX_REINE)
+//					|| nextDeplacementX <= (this.getFkFourmiChef().getFkFourmiReine().getPosX()-this.DIST_MAX_REINE))
+//				) {
+//			this.setPosX(nextDeplacementX);
+//			
+//			if (nextDeplacementY < this.getFkTerrain().getNbColonne() 
+//					&& nextDeplacementY >= 0 
+//					&& (nextDeplacementY <= (this.getFkFourmiChef().getFkFourmiReine().getPosY()+this.DIST_MAX_REINE)
+//						|| nextDeplacementY <= (this.getFkFourmiChef().getFkFourmiReine().getPosY()-this.DIST_MAX_REINE))
+//					) {
+//				this.setPosY(nextDeplacementY);
+//				
+//			}
+//		}	
+//		wait(500);
+		
+		if (nextDeplacementX > this.getFkTerrain().getNbLigne() 
+				|| nextDeplacementX < 0
+				|| nextDeplacementX <= (this.getFkFourmiChef().getFkFourmiReine().getPosX()+this.DIST_MAX_REINE)
+				|| nextDeplacementX >= (this.getFkFourmiChef().getFkFourmiReine().getPosX()-this.DIST_MAX_REINE)
 				) {
-			this.setPosX(nextDeplacementX);
+			nextDeplacementX = this.getPosX();
 			
-			if (nextDeplacementY < this.getFkTerrain().getNbColonne() 
-					&& nextDeplacementY >= 0 
-					&& (nextDeplacementY <= (this.getFkFourmiChef().getFkFourmiReine().getPosY()+this.DIST_MAX_REINE)
-						|| nextDeplacementY <= (this.getFkFourmiChef().getFkFourmiReine().getPosY()-this.DIST_MAX_REINE))
+			if (nextDeplacementY > this.getFkTerrain().getNbColonne()
+					|| nextDeplacementX < 0
+					|| nextDeplacementY <= (this.getFkFourmiChef().getFkFourmiReine().getPosY()+this.DIST_MAX_REINE)
+					|| nextDeplacementY >= (this.getFkFourmiChef().getFkFourmiReine().getPosY()-this.DIST_MAX_REINE)
 					) {
-				this.setPosY(nextDeplacementY);
+				nextDeplacementY = this.getPosY();
 				
 			}
 		}
-		System.out.println("x:"+this.getPosX()+" y:"+this.getPosY());
-		wait(500);
+		
+		this.setPosX(nextDeplacementX);
+		this.setPosY(nextDeplacementY);
+		System.out.println(this.getIdFourmi() + "xn"+nextDeplacementX+" yn:"+nextDeplacementY);
+		
 	}
 	
 	/**
@@ -201,6 +222,7 @@ public class FourmiSoldat extends Fourmi implements Affichable, Combattant, Runn
 			if (this.getPosX() > this.getFkFourmiChef().getFkFourmiReine().getPosX()
 					&& this.getPosY() > this.getFkFourmiChef().getFkFourmiReine().getPosY()) {
 				this.seDeplacer(this.getPosX()-1, this.getPosY()-1);
+				
 			} else {
 				
 				// Si x < reine et y > reine : bas gauche
@@ -225,8 +247,6 @@ public class FourmiSoldat extends Fourmi implements Affichable, Combattant, Runn
 			}
 			
 		}
-		
-		// TODO : Ajouter un timer pour "voir" les deplacements
 		
 	}
 	
@@ -267,8 +287,6 @@ public class FourmiSoldat extends Fourmi implements Affichable, Combattant, Runn
 				}
 			}
 			
-			// TODO : Ajouter un timer pour "voir" les deplacements
-
 		}
 		
 	}
@@ -279,7 +297,8 @@ public class FourmiSoldat extends Fourmi implements Affichable, Combattant, Runn
 	public void pheromoneNourriture(){
 		// TODO : parcourir la map et ramener la nourriture si plein puis repartir a la recherche
 		
-		// TODO : Tant que le pheromone courant est la recherche de nourriture
+		// Tant que le pheromone courant est la recherche de nourriture
+		while(pheromoneCourant == EnumPheromone.NOURRITURE){
 			
 			boolean isPheromone = false;
 			int nextPosX = -1-this.DIST_VISUELLE;
@@ -302,7 +321,7 @@ public class FourmiSoldat extends Fourmi implements Affichable, Combattant, Runn
 				}
 				
 			}
-		
+			
 			// Il y a presence de pheromone autours
 			if (isPheromone) {
 				
@@ -342,6 +361,7 @@ public class FourmiSoldat extends Fourmi implements Affichable, Combattant, Runn
 					// On se deplace sur la cellule
 					
 					
+					
 				}
 				
 				// S'il n'y a pas de cellule ideale
@@ -361,7 +381,9 @@ public class FourmiSoldat extends Fourmi implements Affichable, Combattant, Runn
 				// retourner a la fourmiliere en deposant des pheromones
 		
 			// avertir le chef de la qt
-
+			
+			
+		}
 		
 	}
 	
