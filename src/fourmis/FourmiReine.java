@@ -140,7 +140,7 @@ public class FourmiReine extends Fourmi implements Runnable {
 			
 			// Creation des fourmi chef
 			FourmiChef uneFourmiChef = new FourmiChef(nbOeufsConstruits, this.typeFourmi, 
-					this.getFkTerrain(), false, this.VIE_SOLDAT*2, 50, this.getPosX(), this.getPosY(), 
+					this.getFkTerrain(), false, this.VIE_SOLDAT*2, 180, this.getPosX(), this.getPosY(), 
 					0, 0, this, 0, nbOeufsSoldatParChef);
 			
 			// Ajout des oeufs a eclore dans l'AL
@@ -165,7 +165,7 @@ public class FourmiReine extends Fourmi implements Runnable {
 				int vieSoldat = vieMin + r.nextInt(vieMax-vieMin);
 
 				FourmiSoldat uneFourmiSoldat = new FourmiSoldat(nbOeufsConstruits, this.typeFourmi, 
-						this.getFkTerrain(), false, vieSoldat, 50, this.getPosX(), this.getPosY(), 
+						this.getFkTerrain(), false, vieSoldat, 100, this.getPosX(), this.getPosY(), 
 						0, 0, uneFourmiChef);
 				
 				// Ajouter des oeufs a eclore dans l'AL
