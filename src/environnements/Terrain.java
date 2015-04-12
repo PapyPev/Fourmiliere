@@ -90,7 +90,6 @@ public class Terrain {
 	 * @return
 	 */
 	public ArrayList<ArrayList<Cellule>> initialiserTerrain(int nbLigne, int nbColonne, EnumCellule typeCellule){
-		//TODO : Init terrain : faire un init sur une cellule
 		
 		// Configuration du Terrain a retourner
 		ArrayList<ArrayList<Cellule>> indexTerrain = new ArrayList<ArrayList<Cellule>>();
@@ -101,14 +100,15 @@ public class Terrain {
 		// Ligne
 		for (int j = 0; j < nbColonne; j++) {
 			
-			// Colonne a l'interieur
+			// Colonne
 			ArrayList<Cellule> tmpLigne = new ArrayList<>();
 			
 			for (int i = 0; i < nbLigne; i++) {
 				// avec juste un id, cree un terrain avec des cellule types
 				
 				Random r1 = new Random();
-				rand = 0 + r1.nextInt(3-0);
+				rand = 0 + r1.nextInt(4-0); //40%
+
 				if (rand == 0) {
 					nextCell = typeCellule;
 				} else {
@@ -132,7 +132,6 @@ public class Terrain {
 	 * @return un indexTerrain
 	 */
 	public ArrayList<ArrayList<Cellule>> initialiserTerrainRandom(int nbLigne, int nbColonne){
-		//TODO : Init terrain : faire du random sur les cellules
 		
 		// Configuration du Terrain a retourner
 		ArrayList<ArrayList<Cellule>> indexTerrain = new ArrayList<ArrayList<Cellule>>();
@@ -144,8 +143,21 @@ public class Terrain {
 			ArrayList<Cellule> tmpLigne = new ArrayList<>();
 			
 			for (int i = 0; i < nbLigne; i++) {
-				// avec juste un id, cree un terrain avec des cellule random
+
+				// Recuperer aleatoirement une cellule
 				Cellule nouvelleCellule = new Cellule(i);
+				// Retirer la fourmiliere du random
+				while(nouvelleCellule.getTypeCellule() == EnumCellule.FOURMILIERE){
+					nouvelleCellule = new Cellule(i);
+				}
+				
+				Random r1 = new Random();
+				int rand = 0 + r1.nextInt(5-0); // 1cellule/6
+
+				if (rand != 0) {
+					nouvelleCellule.setTypeCellule(EnumCellule.NULLE);
+				}
+				
 				tmpLigne.add(nouvelleCellule);
 			}
 			

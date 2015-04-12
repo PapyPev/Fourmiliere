@@ -147,7 +147,8 @@ public abstract class Fourmi implements Oeuf{
 	public synchronized void seDeplacer(int x, int y) throws InterruptedException{
 		this.posX = x;
 		this.posY = y;
-		wait(300);
+		this.dureeVie--;
+		wait(500);
 	}
 
 }

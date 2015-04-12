@@ -1,5 +1,4 @@
 import java.applet.Applet;
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.util.ArrayList;
@@ -13,23 +12,29 @@ import fourmis.FourmiReine.EnumPheromone;
 
 public class Main extends Applet implements Runnable {
 
-	/**
-	 * Serial ID et attributs
-	 */
+	/* ===========================ATRB================================ */
+	
 	private static final long serialVersionUID = 1L;
 	
-	Terrain monTerrain;
+	// Terrain courant
+	private Terrain monTerrain;
+	private Image terrainCourant;
 	
 	// Parametres de lancement
 	ArrayList<FourmiReine> lesFourmilieres = new ArrayList<FourmiReine>();
-	int lignes = 50;
-	int colonnes = 50;
-	int nbReine = 1;
-	int nbOeufParReine = 5; //mini : 5
+	int lignes = 30;
+	int colonnes = 30;
+	int nbReine = 3;
+	int nbOeufParReine = 20; //mini : 5
 	double probaOeufChef = 0.1;
     
 	// Definition des images
-	private int tailleImage = 10; //px
+	private int tailleImage = 20; //px
+	
+	// Definition des Terrains (visuel seulement)
+	private Image   imgTerrainDesert;
+	private Image   imgTerrainEau;
+	private Image   imgTerrainJungle;
 	
 	// Definition des Sols
 	private Image   imgSolNulle;
@@ -50,8 +55,14 @@ public class Main extends Applet implements Runnable {
 	private Image   imgBleuChef;
 	private Image   imgBleuReine;
 	
+	// Definition des Autres
+	private Image   imgTombe;
+	private Image   imgTombeReine;
 	
-    private Thread  thread;   //thread de controle
+	// Thread de controle
+    private Thread  thread;
+    
+    /* ===========================START============================= */
     
     @Override
 	public void start() {
@@ -77,33 +88,44 @@ public class Main extends Applet implements Runnable {
 		// Definition de la fenetre d'affichage
 		this.setSize(lignes*tailleImage, colonnes*tailleImage);
 		
-		// Chargement des types de terrain
-		imgSolNulle=getImage(getCodeBase(),"./img2/solNulle.png");
-		imgSolArbre=getImage(getCodeBase(),"./img2/solArbre.png");
-		imgSolBoue=getImage(getCodeBase(),"./img2/solBoue.png");
-		imgSolFourmiliere=getImage(getCodeBase(),"./img2/solFourmiliere.png");
-		imgSolPlante=getImage(getCodeBase(),"./img2/solPlante.png");
-		imgSolTerrier=getImage(getCodeBase(),"./img2/solTerrier.png");
+		// Chargement des types de terrain (visuel seulement)
+		imgTerrainDesert=getImage(getCodeBase(),"./img/terrain/desert.png");
+		imgTerrainEau=getImage(getCodeBase(),"./img/terrain/eau.png");
+		imgTerrainJungle=getImage(getCodeBase(),"./img/terrain/jungle.png");
+		
+		// Chargement des types de cellule
+		imgSolNulle=getImage(getCodeBase(),"./img/sol/nulle.png");
+		imgSolArbre=getImage(getCodeBase(),"./img/sol/arbre.png");
+		imgSolBoue=getImage(getCodeBase(),"./img/sol/boue.png");
+		imgSolFourmiliere=getImage(getCodeBase(),"./img/sol/fourmiliere.png");
+		imgSolPlante=getImage(getCodeBase(),"./img/sol/plante.png");
+		imgSolTerrier=getImage(getCodeBase(),"./img/sol/terrier.png");
 	 	
 		// Chargement des types d'images fourmi Jaune
-		imgJauneSoldat=getImage(getCodeBase(),"./img2/jaune/soldat.png");
-		imgJauneChef=getImage(getCodeBase(),"./img2/jaune/chef.png");
-		imgJauneReine=getImage(getCodeBase(),"./img2/jaune/reine.png");
+		imgJauneSoldat=getImage(getCodeBase(),"./img/fourmi/jaune/soldat.png");
+		imgJauneChef=getImage(getCodeBase(),"./img/fourmi/jaune/chef.png");
+		imgJauneReine=getImage(getCodeBase(),"./img/fourmi/jaune/reine.png");
 
 		// Chargement des types d'images fourmi bleu
-		imgBleuSoldat=getImage(getCodeBase(),"./img2/bleu/soldat.png");
-		imgBleuChef=getImage(getCodeBase(),"./img2/bleu/chef.png");
-		imgBleuReine=getImage(getCodeBase(),"./img2/bleu/reine.png");
+		imgBleuSoldat=getImage(getCodeBase(),"./img/fourmi/bleu/soldat.png");
+		imgBleuChef=getImage(getCodeBase(),"./img/fourmi/bleu/chef.png");
+		imgBleuReine=getImage(getCodeBase(),"./img/fourmi/bleu/reine.png");
 
 		// Chargement des types d'images fourmi noir
-		imgNoirSoldat=getImage(getCodeBase(),"./img2/noir/soldat.png");
-		imgNoirChef=getImage(getCodeBase(),"./img2/noir/chef.png");
-		imgNoirReine=getImage(getCodeBase(),"./img2/noir/reine.png");
+		imgNoirSoldat=getImage(getCodeBase(),"./img/fourmi/noir/soldat.png");
+		imgNoirChef=getImage(getCodeBase(),"./img/fourmi/noir/chef.png");
+		imgNoirReine=getImage(getCodeBase(),"./img/fourmi/noir/reine.png");
+		
+		// Chargement des types d'images autre
+		imgTombe=getImage(getCodeBase(),"./img/autre/tombe.png");
+		imgTombeReine=getImage(getCodeBase(),"./img/autre/tombereine.png");
+		
+		// Definition du terrain courant (visuel seulement)
+		terrainCourant = imgTerrainDesert;
 		
 		// Initialisation du terrain - Pas besoin de type si random
-		monTerrain = new Terrain(1, lignes, colonnes, EnumCellule.PLANTE);
-		//monTerrain = new Terrain(1, lignes, colonnes);
-		
+		//monTerrain = new Terrain(1, lignes, colonnes, EnumCellule.PLANTE);
+		monTerrain = new Terrain(1, lignes, colonnes);
 
 		// Initialisation des Fourmilieres / Reines
 		for (int i = 0; i < nbReine; i++) {
@@ -116,6 +138,8 @@ public class Main extends Applet implements Runnable {
 						
 			// Creation de la FourmiReine
 			FourmiReine uneFourmiReine = new FourmiReine(i, monTerrain, false, 100, 100, initX, initY, 0, 0);
+			Thread nouveauThread = new Thread(uneFourmiReine);
+			nouveauThread.start();
 			lesFourmilieres.add(uneFourmiReine);
 			
 			// Implantation de la Fourmiliere
@@ -131,14 +155,15 @@ public class Main extends Applet implements Runnable {
 			lesFourmilieres.get(i).eclosion();
 		}
 		
+		
 		// Informer aux fourmis d'aller chercher de la nourriture
 		for (int i = 0; i < lesFourmilieres.size(); i++){
-			lesFourmilieres.get(i).informerParPheromone(EnumPheromone.VIVRE);
+			lesFourmilieres.get(i).informerParPheromone(EnumPheromone.VIVRE); // autours fourmiliere
 		}
-
-		
 		
 	}
+	
+	/* ===========================IHM============================= */
 	
 	/**
 	 * Methode appellee pour redessiner l'interface, appelee par repaint()
@@ -152,37 +177,44 @@ public class Main extends Applet implements Runnable {
 
 			//g.fillOval(i*13, j*10, FR.getTerrain().getCase(i, j).getNourriture()/10, FR.getTerrain().getCase(i, j).getNourriture()/10);
 			
-		
-			// Affichage du terrain selon le type de cellule
+			// --- Affichage du terrain -------------------------
 			for (int i = 0; i < monTerrain.getNbLigne(); i++) {
 				for (int j = 0; j < monTerrain.getNbColonne(); j++) {
+					g.drawImage(terrainCourant,i*tailleImage,j*tailleImage,this);
+				}
+			}
+			
+			// --- Affichage des cellules -------------------------
+			for (int i = 0; i < monTerrain.getNbLigne(); i++) {
+				for (int j = 0; j < monTerrain.getNbColonne(); j++) {
+					
 					switch(monTerrain.getACellule(i, j).getTypeCellule()){
 						case ARBRE:
 							if(monTerrain.getACellule(i, j).getQtNourritureCourante() > 0){
 								g.drawImage(imgSolArbre,i*tailleImage,j*tailleImage,this);
 							} else{
-								g.drawImage(imgSolArbre,i*tailleImage,j*tailleImage,this);
+								g.drawImage(imgSolNulle,i*tailleImage,j*tailleImage,this);
 							}
 							break;
 						case BOUE:
 							if(monTerrain.getACellule(i, j).getQtNourritureCourante() > 0){
 								g.drawImage(imgSolBoue,i*tailleImage,j*tailleImage,this);
 							} else{
-								g.drawImage(imgSolBoue,i*tailleImage,j*tailleImage,this);
+								g.drawImage(imgSolNulle,i*tailleImage,j*tailleImage,this);
 							}
 							break;
 						case PLANTE:
 							if(monTerrain.getACellule(i, j).getQtNourritureCourante() > 0){
 								g.drawImage(imgSolPlante,i*tailleImage,j*tailleImage,this);
 							} else{
-								g.drawImage(imgSolPlante,i*tailleImage,j*tailleImage,this);
+								g.drawImage(imgSolNulle,i*tailleImage,j*tailleImage,this);
 							}
 							break;
 						case TERRIER:
 							if(monTerrain.getACellule(i, j).getQtNourritureCourante() > 0){
 								g.drawImage(imgSolTerrier,i*tailleImage,j*tailleImage,this);
 							} else{
-								g.drawImage(imgSolTerrier,i*tailleImage,j*tailleImage,this);
+								g.drawImage(imgSolNulle,i*tailleImage,j*tailleImage,this);
 							}
 							break;
 						case FOURMILIERE:
@@ -191,56 +223,70 @@ public class Main extends Applet implements Runnable {
 						case NULLE:
 							g.drawImage(imgSolNulle,i*tailleImage,j*tailleImage,this);
 							break;
-					}
+					} // end switch
+				
 				}
 			}
 			
-			// Affichage des fourmis
-			for (int i = 0; i < lesFourmilieres.size(); i++) {
-				int posX, posY;
+			// --- Affichage des fourmis -------------------------
+			for (FourmiReine fourmiReine : lesFourmilieres) {
 				
-				// Affichage Reine
-				posX = lesFourmilieres.get(i).getPosX();
-				posY = lesFourmilieres.get(i).getPosY();
-				switch(lesFourmilieres.get(i).getTypeFourmi()){
-					case BLEU:
-						g.drawImage(imgBleuReine,posX*tailleImage,posY*tailleImage,this);
-						break;
-					case JAUNE:
-						g.drawImage(imgJauneReine,posX*tailleImage,posY*tailleImage,this);
-						break;
-					case NOIR:
-						g.drawImage(imgNoirReine,posX*tailleImage,posY*tailleImage,this);
-						break;
-				}
-				
-				// Affichage des fourmis de la reine
-				for (int j = 0; j < lesFourmilieres.get(i).getMesFourmis().size(); j++) {
+				// Verification la vie des reines
+				if (fourmiReine.getDureeVie()>0) {
 					
-					// Si elles ont encore leur point de vie
-					if (lesFourmilieres.get(i).getMesFourmis().get(j).isAffichable()) {
-						posX = lesFourmilieres.get(i).getMesFourmis().get(j).getPosX();
-						posY = lesFourmilieres.get(i).getMesFourmis().get(j).getPosY();
-						switch(lesFourmilieres.get(i).getMesFourmis().get(j).getFkFourmiReine().getTypeFourmi()){
+					// Affichage des reines
+					switch(fourmiReine.getTypeFourmi()){
 						case BLEU:
-							g.drawImage(imgBleuSoldat,posX*tailleImage,posY*tailleImage,this);
-							g.setColor(Color.PINK);
+							g.drawImage(imgBleuReine,fourmiReine.getPosX()*tailleImage,
+									fourmiReine.getPosY()*tailleImage,this);
 							break;
 						case JAUNE:
-							g.drawImage(imgJauneSoldat,posX*tailleImage,posY*tailleImage,this);
-							g.setColor(Color.PINK);
-							g.fillOval(tailleImage*posX, tailleImage*posY, 10,10);
-
+							g.drawImage(imgJauneReine,fourmiReine.getPosX()*tailleImage,
+									fourmiReine.getPosY()*tailleImage,this);
 							break;
 						case NOIR:
-							g.drawImage(imgNoirSoldat,posX*tailleImage,posY*tailleImage,this);
+							g.drawImage(imgNoirReine,fourmiReine.getPosX()*tailleImage,
+									fourmiReine.getPosY()*tailleImage,this);
 							break;
-					}
-					}
+					} // end switch
 					
+					// Affichage des fourmis de la reine
+					for (int k = 0; k < fourmiReine.getMesFourmis().size(); k++) {
+						
+						// Verification de la vie de la fourmi
+						if (fourmiReine.getMesFourmis().get(k).isAffichable()) {
+							switch(fourmiReine.getMesFourmis().get(k).getFkFourmiReine().getTypeFourmi()){
+								case BLEU:
+									g.drawImage(imgBleuSoldat,fourmiReine.getMesFourmis().get(k).getPosX()*tailleImage,
+											fourmiReine.getMesFourmis().get(k).getPosY()*tailleImage,this);
+									break;
+								case JAUNE:
+									g.drawImage(imgJauneSoldat,fourmiReine.getMesFourmis().get(k).getPosX()*tailleImage,
+											fourmiReine.getMesFourmis().get(k).getPosY()*tailleImage,this);
+									break;
+								case NOIR:
+									g.drawImage(imgNoirSoldat,fourmiReine.getMesFourmis().get(k).getPosX()*tailleImage,
+											fourmiReine.getMesFourmis().get(k).getPosY()*tailleImage,this);
+									break;
+							} // end switch
+						} else {
+							g.drawImage(imgTombe,fourmiReine.getMesFourmis().get(k).getPosX()*tailleImage,
+									fourmiReine.getMesFourmis().get(k).getPosY()*tailleImage,this);
+						}
+						
+						
+					} // end for
+					
+				} 
+				
+				// 
+				else {
+					g.drawImage(imgTombeReine,fourmiReine.getPosX()*tailleImage,fourmiReine.getPosY()*tailleImage,this);
 				}
-			} // end affichage fourmi
-			
+				
+			}
+
+			// Attendre un peu avant de rectualiser l'affichage
 			try {
 				Thread.sleep(500);
 			} catch (InterruptedException e) {

@@ -20,7 +20,7 @@ public class FourmiSoldat extends Fourmi implements Affichable, Combattant, Runn
 	
 	/* ===========================ATRB================================ */
 	
-	private int DIST_MAX_REINE = 4; //nb de cellule autours de la reine apres naissance
+	private int DIST_MAX_REINE = 2; //nb de cellule autours de la reine apres naissance
 	private int DIST_VISUELLE = 2; // nb de cellule vues autours de cette fourmi
 	private FourmiChef fkFourmiChef;
 	private EnumPheromone pheromoneCourant;
@@ -143,72 +143,6 @@ public class FourmiSoldat extends Fourmi implements Affichable, Combattant, Runn
 	}
 	
 	/**
-	 * Methode permettant a une fourmi de vivre a une distance
-	 * de la fourmiliere
-	 * @throws InterruptedException 
-	 */
-	public synchronized void pheromoneVivre() throws InterruptedException{
-		
-		// Retourner a la fourmiliere
-		/*if(this.getPosX() != this.getFkFourmiChef().getFkFourmiReine().getPosX()
-				&& this.getPosY() != this.getFkFourmiChef().getFkFourmiReine().getPosY()){
-			this.retournerVoirSaReine();
-		}*/
-		
-		// Mouvements aleatoire autours de la fourmiliere
-		Random r1 = new Random();
-		Random r2 = new Random();
-		int deplacementX = r1.nextInt(1 + 1) -1;
-		int deplacementY = r2.nextInt(1 + 1) -1;
-		
-		System.out.println(this.getIdFourmi() + ":"+ "x"+this.getPosX()+" y:"+this.getPosY());
-		int nextDeplacementX = this.getPosX()+deplacementX;
-		int nextDeplacementY = this.getPosY()+deplacementY;
-		System.out.println(this.getIdFourmi() + ":"+ "xa"+nextDeplacementX+" ya:"+nextDeplacementY);
-		
-		// de la fourmilliere (de la reine)
-//		if (nextDeplacementX < this.getFkTerrain().getNbLigne() 
-//				&& nextDeplacementX >= 0 
-//				&& (nextDeplacementX <= (this.getFkFourmiChef().getFkFourmiReine().getPosX()+this.DIST_MAX_REINE)
-//					|| nextDeplacementX <= (this.getFkFourmiChef().getFkFourmiReine().getPosX()-this.DIST_MAX_REINE))
-//				) {
-//			this.setPosX(nextDeplacementX);
-//			
-//			if (nextDeplacementY < this.getFkTerrain().getNbColonne() 
-//					&& nextDeplacementY >= 0 
-//					&& (nextDeplacementY <= (this.getFkFourmiChef().getFkFourmiReine().getPosY()+this.DIST_MAX_REINE)
-//						|| nextDeplacementY <= (this.getFkFourmiChef().getFkFourmiReine().getPosY()-this.DIST_MAX_REINE))
-//					) {
-//				this.setPosY(nextDeplacementY);
-//				
-//			}
-//		}	
-//		wait(500);
-		
-		if (nextDeplacementX > this.getFkTerrain().getNbLigne() 
-				|| nextDeplacementX < 0
-				|| nextDeplacementX <= (this.getFkFourmiChef().getFkFourmiReine().getPosX()+this.DIST_MAX_REINE)
-				|| nextDeplacementX >= (this.getFkFourmiChef().getFkFourmiReine().getPosX()-this.DIST_MAX_REINE)
-				) {
-			nextDeplacementX = this.getPosX();
-			
-			if (nextDeplacementY > this.getFkTerrain().getNbColonne()
-					|| nextDeplacementX < 0
-					|| nextDeplacementY <= (this.getFkFourmiChef().getFkFourmiReine().getPosY()+this.DIST_MAX_REINE)
-					|| nextDeplacementY >= (this.getFkFourmiChef().getFkFourmiReine().getPosY()-this.DIST_MAX_REINE)
-					) {
-				nextDeplacementY = this.getPosY();
-				
-			}
-		}
-		
-		this.setPosX(nextDeplacementX);
-		this.setPosY(nextDeplacementY);
-		System.out.println(this.getIdFourmi() + "xn"+nextDeplacementX+" yn:"+nextDeplacementY);
-		
-	}
-	
-	/**
 	 * Methode permettant de retourner aux cotes de sa reine
 	 * @throws InterruptedException 
 	 */
@@ -288,6 +222,77 @@ public class FourmiSoldat extends Fourmi implements Affichable, Combattant, Runn
 			}
 			
 		}
+		
+	}
+	
+	/* ===========================PHEROMONE============================= */
+	
+	/**
+	 * Methode permettant a une fourmi de fourmiller aleatoirement
+	 * @throws InterruptedException 
+	 */
+	public void pheromoneRien() throws InterruptedException{
+		
+		// Valeur de deplacement aleatoire a +/- 1
+		Random r1 = new Random();
+		Random r2 = new Random();
+		int deplacementX = r1.nextInt(2 + 1) -1;
+		int deplacementY = r2.nextInt(2 + 1) -1;
+		
+		// Calcul du prochain deplacement
+		int nextDeplacementX = this.getPosX()+deplacementX;
+		int nextDeplacementY = this.getPosY()+deplacementY;
+		
+		// Verification du deplacement
+		if (nextDeplacementX < 0 || nextDeplacementX > this.getFkFourmiReine().getFkTerrain().getNbLigne()) {
+			nextDeplacementX = this.getPosX();
+		}
+		if (nextDeplacementY < 0 || nextDeplacementY > this.getFkFourmiReine().getFkTerrain().getNbColonne()) {
+			nextDeplacementY = this.getPosY();
+		}
+		
+		// Deplacement
+		this.seDeplacer(nextDeplacementX, nextDeplacementY);
+						
+	}
+	
+	/**
+	 * Methode permettant a une fourmi de vivre a une distance
+	 * de la fourmiliere
+	 * @throws InterruptedException 
+	 */
+	public synchronized void pheromoneVivre() throws InterruptedException{
+		
+		// TODO : vivre a la distance de la fourmiliere
+		
+		// Valeur de deplacement aleatoire a +/- 1
+		Random r1 = new Random();
+		Random r2 = new Random();
+		int deplacementX = r1.nextInt(2 + 1) -1;
+		int deplacementY = r2.nextInt(2 + 1) -1;
+		
+		// Calcul du prochain deplacement
+		int nextDeplacementX = this.getPosX()+deplacementX;
+		int nextDeplacementY = this.getPosY()+deplacementY;
+		
+		// Verification du deplacement
+		if (nextDeplacementX < 0 
+				|| nextDeplacementX > this.getFkFourmiReine().getFkTerrain().getNbLigne()
+				|| (nextDeplacementX > this.getFkFourmiChef().getFkFourmiReine().getPosX()+this.DIST_MAX_REINE)
+				|| nextDeplacementX < this.getFkFourmiChef().getFkFourmiReine().getPosX()-this.DIST_MAX_REINE) {
+			nextDeplacementX = this.getPosX();
+			
+		}
+		if (nextDeplacementY < 0 
+				|| nextDeplacementY > this.getFkFourmiReine().getFkTerrain().getNbColonne()
+				|| (nextDeplacementY > this.getFkFourmiChef().getFkFourmiReine().getPosY()+this.DIST_MAX_REINE)
+				|| nextDeplacementY < this.getFkFourmiChef().getFkFourmiReine().getPosY()-this.DIST_MAX_REINE) {
+			nextDeplacementY = this.getPosY();
+
+		}
+		
+		// Deplacement
+		this.seDeplacer(nextDeplacementX, nextDeplacementY);
 		
 	}
 	
@@ -394,20 +399,30 @@ public class FourmiSoldat extends Fourmi implements Affichable, Combattant, Runn
 		// TODO : si une fourmi est sur la cellule en cours, attaquer
 	}
 
+	/* ===========================VIVRE============================= */
+	
 	/**
-	 * Methode permettant a ue fourmi soldat de vivre son existance
+	 * Methode permettant a une fourmi soldat de vivre son existance
 	 */
 	@Override
 	public synchronized void run() {
-		// TODO : verifier si ca fonctionne autours de la fourmiliere
 		
 		while(this.getDureeVie() > 0){
 			
 			switch(this.pheromoneCourant){
 				case RIEN:
-					// TODO : attendre une information
+					try {
+						this.pheromoneRien();
+					} catch (InterruptedException e1) {
+						e1.printStackTrace();
+					}
 					break;
 				case VIVRE:
+					try {
+						this.retournerVoirSaReine();
+					} catch (InterruptedException e1) {
+						e1.printStackTrace();
+					}
 					try {
 						this.pheromoneVivre();
 					} catch (InterruptedException e) {
@@ -432,6 +447,9 @@ public class FourmiSoldat extends Fourmi implements Affichable, Combattant, Runn
 						
 		}
 		
+		// Fin du thread
+		System.out.println(this.getIdFourmi() + "S: Je suis mort");
+		
 		// Decremente le nombre de soldat vivant, informe le chef
 		this.getFkFourmiChef().miseAJourNbSoldatVivants();
 		
@@ -447,7 +465,7 @@ public class FourmiSoldat extends Fourmi implements Affichable, Combattant, Runn
 			
 			// Met a jour le message courant
 			this.setPheromoneCourant(pheromoneRecu);
-			System.out.println("Soldat:" + pheromoneRecu);
+			
 			
 		} else{
 			System.out.println("WARNING: Update Soldat, Message pheromone null.");
@@ -462,7 +480,7 @@ public class FourmiSoldat extends Fourmi implements Affichable, Combattant, Runn
 
 	@Override
 	public boolean isAffichable() {
-		return getDureeVie() > 0;
+		return this.getDureeVie() > 0;
 	}
 
 	@Override

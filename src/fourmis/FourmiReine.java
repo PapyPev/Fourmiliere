@@ -26,6 +26,8 @@ public class FourmiReine extends Fourmi implements Runnable {
 	private Pheromone unPheromone;
 	
 	private ArrayList<Affichable> mesFourmis = new ArrayList<>();
+	private int VIE_SOLDAT = 50; //nb deplacements
+	private double PROBA_VIE_SOLDAT = 0.1; // +/- x%
 	
 	/* ===========================CONST================================ */
 	
@@ -138,7 +140,7 @@ public class FourmiReine extends Fourmi implements Runnable {
 			
 			// Creation des fourmi chef
 			FourmiChef uneFourmiChef = new FourmiChef(nbOeufsConstruits, this.typeFourmi, 
-					this.getFkTerrain(), false, 100, 50, this.getPosX(), this.getPosY(), 
+					this.getFkTerrain(), false, this.VIE_SOLDAT*2, 50, this.getPosX(), this.getPosY(), 
 					0, 0, this, 0, nbOeufsSoldatParChef);
 			
 			// Ajout des oeufs a eclore dans l'AL
@@ -154,9 +156,16 @@ public class FourmiReine extends Fourmi implements Runnable {
 			
 			// Creation des fourmis soldats
 			while (nbSoldatAConstruirePourCeChef < nbOeufsSoldatParChef) {
+				
+				// Vie aleatoire bornee d'un soldat
+				int vieMin = (int)Math.round(this.VIE_SOLDAT-(this.VIE_SOLDAT*this.PROBA_VIE_SOLDAT));
+				int vieMax = (int)Math.round(this.VIE_SOLDAT+(this.VIE_SOLDAT*this.PROBA_VIE_SOLDAT));
+
+				Random r = new Random();
+				int vieSoldat = vieMin + r.nextInt(vieMax-vieMin);
 
 				FourmiSoldat uneFourmiSoldat = new FourmiSoldat(nbOeufsConstruits, this.typeFourmi, 
-						this.getFkTerrain(), false, 30, 10, this.getPosX(), this.getPosY(), 
+						this.getFkTerrain(), false, vieSoldat, 50, this.getPosX(), this.getPosY(), 
 						0, 0, uneFourmiChef);
 				
 				// Ajouter des oeufs a eclore dans l'AL
@@ -195,7 +204,7 @@ public class FourmiReine extends Fourmi implements Runnable {
 			oeufAEclore.get(i).eclosion();
 		}
 		
-		// Informer les fourmis qu'elles doivent vivre
+		// Informer les fourmis de bouger aleatoirement
 		this.informerParPheromone(EnumPheromone.VIVRE);
 	}
 	
@@ -204,7 +213,37 @@ public class FourmiReine extends Fourmi implements Runnable {
 	 */
 	@Override
 	public void run(){
-		// TODO : Definir ce que doit faire la reine
+				
+		// Tant qu'elle a de la vie (FouriReine Vie = 100)
+		while(this.getDureeVie() > 0){
+			
+			try {
+				this.seDeplacer(this.getPosX(), this.getPosY());
+			} catch (InterruptedException e1) {
+				e1.printStackTrace();
+			}
+			
+			if (this.getDureeVie() == 90) {
+				this.informerParPheromone(EnumPheromone.RIEN); // deplacement random
+			}
+			
+			if (this.getDureeVie() == 50) {
+				this.informerParPheromone(EnumPheromone.NOURRITURE);
+			}
+			
+			// Attendre 1sec pour chaque action de la reine
+			try {
+				System.out.println("QUEEN"+this.getIdFourmi()+":"+getDureeVie());
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			
+		}
+		
+		// Fin du thread
+		System.out.println(this.getIdFourmi() + "R: Je suis mort");
+		
 	}
 	
 

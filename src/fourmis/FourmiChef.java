@@ -5,6 +5,7 @@ import java.util.Observer;
 
 import environnements.Terrain;
 import fourmis.FourmiReine.EnumPheromone;
+import outils.Affichable;
 import outils.Combattant;
 
 /**
@@ -14,7 +15,7 @@ import outils.Combattant;
  * @version 20150331
  *
  */
-public class FourmiChef extends Fourmi implements Combattant, Runnable, Observer{
+public class FourmiChef extends Fourmi implements Affichable, Combattant, Runnable, Observer{
 	
 	/* ===========================ATRB================================ */
 
@@ -147,9 +148,13 @@ public class FourmiChef extends Fourmi implements Combattant, Runnable, Observer
 		}
 		
 		// Fin du thread
-		System.out.println("Chef " + this.getIdFourmi() + " : Je suis mort");
+		System.out.println(this.getIdFourmi() + "C: Je suis mort");
 	}
 
+	/**
+	 * Methode permettant d'actualiser les actions de la fourmi selon le pheromone
+	 * de la mere
+	 */
 	@Override
 	public synchronized void update(Observable o, Object arg) {
 				
@@ -159,7 +164,6 @@ public class FourmiChef extends Fourmi implements Combattant, Runnable, Observer
 		if(pheromoneRecu != null){
 			// Met a jour le message courant
 			this.setPheromoneCourant(pheromoneRecu);
-			System.out.println("Chef:" + pheromoneRecu);
 			// Debloque le wait du thread en cours
 			notify(); 
 			
@@ -172,6 +176,11 @@ public class FourmiChef extends Fourmi implements Combattant, Runnable, Observer
 	@Override
 	public void combattantAttaquer(){
 		// TODO : chef, attaquer
+	}
+
+	@Override
+	public boolean isAffichable() {
+		return this.getDureeVie() > 0;
 	}
 
 }
