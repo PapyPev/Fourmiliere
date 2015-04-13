@@ -114,6 +114,7 @@ public class Main extends Applet implements Runnable {
 	private Image   imgTerrainEau;
 	private Image   imgTerrainJungle;
 	private Image   imgTerrainNeutre;
+	private Image   imgTerrainContour;
 	
 	// Definition des Sols
 	private Image   imgSolNulle;
@@ -177,6 +178,7 @@ public class Main extends Applet implements Runnable {
 		imgTerrainEau=getImage(getCodeBase(),"./img/terrain/eau.png");
 		imgTerrainJungle=getImage(getCodeBase(),"./img/terrain/jungle.png");
 		imgTerrainNeutre=getImage(getCodeBase(),"./img/terrain/neutre.png");
+		imgTerrainContour=getImage(getCodeBase(),"./img/terrain/contour.png");
 		
 		// Chargement des types de cellule
 		imgSolNulle=getImage(getCodeBase(),"./img/sol/nulle.png");
@@ -285,8 +287,8 @@ public class Main extends Applet implements Runnable {
 			//g.fillOval(i*13, j*10, FR.getTerrain().getCase(i, j).getNourriture()/10, FR.getTerrain().getCase(i, j).getNourriture()/10);
 			
 			// --- Affichage du terrain -------------------------
-			for (int i = 0; i < monTerrain.getNbLigne(); i++) {
-				for (int j = 0; j < monTerrain.getNbColonne(); j++) {
+			for (int i = 0; i < monTerrain.getNbLigne()+2; i++) {
+				for (int j = 0; j < monTerrain.getNbColonne()+2; j++) {
 					g.drawImage(terrainCourant,i*tailleImage,j*tailleImage,this);
 				}
 			}

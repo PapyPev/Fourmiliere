@@ -225,12 +225,12 @@ public class FourmiReine extends Fourmi implements Runnable {
 			
 			// A 90% de la vie de la reine on se deplace aleatoirement
 			if (this.getDureeVie() == (int)Math.round((double)(vieInitiale*0.9))) {
-				this.informerParPheromone(EnumPheromone.RIEN); // deplacement random
+				this.informerParPheromone(EnumPheromone.NOURRITURE); // deplacement random
 			}
 			
 			// A 70% de la vie de la reine on part cherche de la nourriture
 			if (this.getDureeVie() == (int)Math.round((double)(vieInitiale*0.7))) {
-				this.informerParPheromone(EnumPheromone.NOURRITURE);
+				this.informerParPheromone(EnumPheromone.RIEN);
 			}
 			
 			// A 50% de la vie de la reine on attaque les autres fourmis (gue-guerre!)

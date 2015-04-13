@@ -295,9 +295,113 @@ public class FourmiSoldat extends Fourmi implements Affichable, Combattant, Runn
 	
 	/**
 	 * Methode permettant a une fourmi d'aller chercher de la nourriture
+	 * @throws InterruptedException : gestion des erreurs
 	 */
-	public void pheromoneNourriture(){
+	public void pheromoneNourriture() throws InterruptedException{
 		// TODO : parcourir la map et ramener la nourriture si plein puis repartir a la recherche
+		
+		boolean presencePheromoneACote;
+		int distanceVisuellePosX;
+		int distanceVisuellePosY;
+		
+		while(pheromoneCourant == EnumPheromone.NOURRITURE){
+			
+			presencePheromoneACote = false;
+			distanceVisuellePosX = this.getPosX();
+			distanceVisuellePosY = this.getPosY();
+			
+			// Recherche d'une cellule visuelle avec des pheromones
+			for (int i = -this.DIST_VISUELLE; i < this.DIST_VISUELLE; i++) {
+				for (int j = -this.DIST_VISUELLE; j < this.DIST_VISUELLE; j++) {
+					
+					distanceVisuellePosX = this.getPosX() + i;
+					distanceVisuellePosY = this.getPosY() + j;
+					
+					// Si on depasse les limites du terrain en ligne
+					if (distanceVisuellePosX < 0 
+							|| distanceVisuellePosX > this.getFkTerrain().getNbLigne()) {
+						distanceVisuellePosX = this.getPosX();
+					}
+					
+					// Si on depasse les limites du terrain en colonne
+					if(distanceVisuellePosY < 0 
+							|| distanceVisuellePosY > this.getFkTerrain().getNbColonne()){
+						distanceVisuellePosY = this.getPosY();
+					}
+					
+					// Verification presence pheromone
+					// TODO : ATTENTION erreur, verifier les coordonnees
+					if(this.getFkTerrain().getACellule(distanceVisuellePosX, distanceVisuellePosY).isPresencePheromone()){
+						presencePheromoneACote = true;
+						System.out.println("not:"+distanceVisuellePosX+" "+distanceVisuellePosY);
+					}
+					
+				}
+			}
+			
+			// S'il n'y a pas de cellule a cote on se deplace random
+			if(!presencePheromoneACote){
+				
+				// Valeur de deplacement aleatoire a +/- 1
+				Random r1 = new Random();
+				Random r2 = new Random();
+				int deplacementX = r1.nextInt(2 + 1) -1;
+				int deplacementY = r2.nextInt(2 + 1) -1;
+				
+				// Calcul du prochain deplacement
+				int nextDeplacementX = this.getPosX()+deplacementX;
+				int nextDeplacementY = this.getPosY()+deplacementY;
+				
+				// Verification du deplacement
+				if (nextDeplacementX < 0 || nextDeplacementX > this.getFkFourmiReine().getFkTerrain().getNbLigne()){
+					nextDeplacementX = this.getPosX();
+					
+				}
+				if (nextDeplacementY < 0 || nextDeplacementY > this.getFkFourmiReine().getFkTerrain().getNbColonne()){
+					nextDeplacementY = this.getPosY();
+
+				}
+				
+				// Deplacement
+				this.seDeplacer(nextDeplacementX, nextDeplacementY);
+				
+			}
+			
+			
+			// Il y a presence de pheromone
+			else {
+				
+				// Aller a la cellule
+				for (int i = 0; i < distanceVisuellePosX; i++) {
+					for (int j = 0; j < distanceVisuellePosY; j++) {
+						
+						//System.out.println("Pos" + this.getPosX()+i + " "+this.getPosY()+j);
+						
+						// Deplacement
+						this.seDeplacer(this.getPosX()+i, this.getPosY()+j);
+						
+						// Depot de pheromone
+						this.getFkTerrain().getACellule(this.getPosX(), this.getPosY()).setPresencePheromone(true);
+					
+					}
+				}
+				
+				// On recupere la nourriture
+				this.prendreNourriture();
+				
+				// On retourne voir son chef
+				this.retournerVoirSonChef();
+				
+				// On depose la nourriture
+				this.deposerNourriture();
+				
+			}
+			
+			
+			
+		}
+		
+		/*
 		
 		// Tant que le pheromone courant est la recherche de nourriture
 		while(pheromoneCourant == EnumPheromone.NOURRITURE){
@@ -342,15 +446,23 @@ public class FourmiSoldat extends Fourmi implements Affichable, Combattant, Runn
 				for (int i = (-1-this.DIST_VISUELLE); i < this.DIST_VISUELLE; i++) {
 					for (int j = (-1-this.DIST_VISUELLE); j < this.DIST_VISUELLE; j++) {
 						
-						int qtNourritureVue = this.getFkTerrain().getACellule(this.getPosX()+i, this.getPosY()+j).getQtNourritureCourante();
-						
-						// Si la quantite de nourriture a (+i, +j) est superieure a la quantite deja vue
-						if(qtNourritureMemorisee < this.getFkTerrain().getACellule(this.getPosX()+i, this.getPosY()+j).getQtNourritureCourante()){
+						// verification bordure terrain
+						if(this.getPosX()+i > 0 
+								&& this.getPosX()+i<this.getFkTerrain().getNbLigne()
+								&& this.getPosY()+j > 0
+								&& this.getPosY()+j < this.getFkTerrain().getNbColonne()){
 							
-							// memorisation des informations
-							qtNourritureMemorisee = qtNourritureVue;
-							nextPosXMemorisee = i;
-							nextPosYMemorisee = j;
+							int qtNourritureVue = this.getFkTerrain().getACellule(this.getPosX()+i, this.getPosY()+j).getQtNourritureCourante();
+							
+							// Si la quantite de nourriture a (+i, +j) est superieure a la quantite deja vue
+							if(qtNourritureMemorisee < this.getFkTerrain().getACellule(this.getPosX()+i, this.getPosY()+j).getQtNourritureCourante()){
+								
+								// memorisation des informations
+								qtNourritureMemorisee = qtNourritureVue;
+								nextPosXMemorisee = i;
+								nextPosYMemorisee = j;
+								
+							}
 							
 						}
 						
@@ -386,6 +498,8 @@ public class FourmiSoldat extends Fourmi implements Affichable, Combattant, Runn
 			
 			
 		}
+		
+		*/
 		
 	}
 	
@@ -433,7 +547,12 @@ public class FourmiSoldat extends Fourmi implements Affichable, Combattant, Runn
 					this.pheromoneAttaquer();
 					break;
 				case NOURRITURE:
-					this.pheromoneNourriture();
+					try {
+						this.pheromoneNourriture();
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					break;
 				default:
 					System.out.println("WARNING: Update Soldat, Message pheromone inconnu.");
