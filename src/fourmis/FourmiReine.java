@@ -66,7 +66,7 @@ public class FourmiReine extends Fourmi implements Runnable {
 	public FourmiReine(int idFourmi, Terrain fkTerrain,
 			boolean combattant, int dureeVie, int pointDeForce, int posX, int posY,
 			int qtNourritureTransportee, int qtNourritureTransportable) {
-		super(idFourmi, setRandomEnumCellule(), fkTerrain, combattant, dureeVie, 
+		super(idFourmi, setRandomTypeFourmi(), fkTerrain, combattant, dureeVie, 
 				pointDeForce, posX, posY, qtNourritureTransportee, qtNourritureTransportable);
 		this.unPheromone = new Pheromone();
 	}
@@ -106,7 +106,7 @@ public class FourmiReine extends Fourmi implements Runnable {
 	 * Methode permettant de generer aleatoirement un type de fourmi
 	 * @return une couleur de fourmi aleatoire
 	 */
-	public static EnumFourmi setRandomEnumCellule(){
+	public static EnumFourmi setRandomTypeFourmi(){
 		
 		Random r = new Random();
 		EnumFourmi uneEnumFourmi = null;

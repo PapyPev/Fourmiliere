@@ -4,7 +4,7 @@ import fourmis.FourmiReine;
 
 /**
  * 
- * @author pev, fred
+ * @author pev
  * @version 20150413
  *
  */

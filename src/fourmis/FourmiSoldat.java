@@ -262,8 +262,6 @@ public class FourmiSoldat extends Fourmi implements Affichable, Combattant, Runn
 	 */
 	public synchronized void pheromoneVivre() throws InterruptedException{
 		
-		// TODO : vivre a la distance de la fourmiliere
-		
 		// Valeur de deplacement aleatoire a +/- 1
 		Random r1 = new Random();
 		Random r2 = new Random();
@@ -407,7 +405,7 @@ public class FourmiSoldat extends Fourmi implements Affichable, Combattant, Runn
 	public synchronized void run() {
 		
 		while(this.getDureeVie() > 0){
-			
+						
 			switch(this.pheromoneCourant){
 				case RIEN:
 					try {

@@ -102,17 +102,18 @@ public class Main extends Applet implements Runnable {
 	ArrayList<FourmiReine> lesFourmilieres = new ArrayList<FourmiReine>();
 	int lignes = 30;
 	int colonnes = 30;
-	int nbReine = 10;
-	int nbOeufParReine = 10; //mini : 5
+	int nbReine = 10; //mini : 1
+	int nbOeufParReine = 5; //mini : 5
 	double probaOeufChef = 0.1;
     
 	// Definition des images
-	private int tailleImage = 20; //px
+	private int tailleImage = 16; //px
 	
 	// Definition des Terrains (visuel seulement)
 	private Image   imgTerrainDesert;
 	private Image   imgTerrainEau;
 	private Image   imgTerrainJungle;
+	private Image   imgTerrainNeutre;
 	
 	// Definition des Sols
 	private Image   imgSolNulle;
@@ -123,15 +124,18 @@ public class Main extends Applet implements Runnable {
 	private Image   imgSolFourmiliere;
 		
 	// Definition des Fourmis
-    private Image   imgNoirSoldat;
-	private Image   imgNoirChef;
-	private Image   imgNoirReine;
+    private Image   imgRougeSoldat;
+	private Image   imgRougeChef;
+	private Image   imgRougeReine;
 	private Image   imgJauneSoldat;
 	private Image   imgJauneChef;
 	private Image   imgJauneReine;
 	private Image   imgBleuSoldat;
 	private Image   imgBleuChef;
 	private Image   imgBleuReine;
+	private Image   imgVertSoldat;
+	private Image   imgVertChef;
+	private Image   imgVertReine;
 	
 	// Definition des Autres
 	private Image   imgTombe;
@@ -172,6 +176,7 @@ public class Main extends Applet implements Runnable {
 		imgTerrainDesert=getImage(getCodeBase(),"./img/terrain/desert.png");
 		imgTerrainEau=getImage(getCodeBase(),"./img/terrain/eau.png");
 		imgTerrainJungle=getImage(getCodeBase(),"./img/terrain/jungle.png");
+		imgTerrainNeutre=getImage(getCodeBase(),"./img/terrain/neutre.png");
 		
 		// Chargement des types de cellule
 		imgSolNulle=getImage(getCodeBase(),"./img/sol/nulle.png");
@@ -191,10 +196,15 @@ public class Main extends Applet implements Runnable {
 		imgBleuChef=getImage(getCodeBase(),"./img/fourmi/bleu/chef.png");
 		imgBleuReine=getImage(getCodeBase(),"./img/fourmi/bleu/reine.png");
 
-		// Chargement des types d'images fourmi noir
-		imgNoirSoldat=getImage(getCodeBase(),"./img/fourmi/noir/soldat.png");
-		imgNoirChef=getImage(getCodeBase(),"./img/fourmi/noir/chef.png");
-		imgNoirReine=getImage(getCodeBase(),"./img/fourmi/noir/reine.png");
+		// Chargement des types d'images fourmi rouge
+		imgRougeSoldat=getImage(getCodeBase(),"./img/fourmi/rouge/soldat.png");
+		imgRougeChef=getImage(getCodeBase(),"./img/fourmi/rouge/chef.png");
+		imgRougeReine=getImage(getCodeBase(),"./img/fourmi/rouge/reine.png");
+		
+		// Chargement des types d'images fourmi vert
+		imgVertSoldat=getImage(getCodeBase(),"./img/fourmi/vert/soldat.png");
+		imgVertChef=getImage(getCodeBase(),"./img/fourmi/vert/chef.png");
+		imgVertReine=getImage(getCodeBase(),"./img/fourmi/vert/reine.png");
 		
 		// Chargement des types d'images autre
 		imgTombe=getImage(getCodeBase(),"./img/autre/tombe.png");
@@ -215,7 +225,7 @@ public class Main extends Applet implements Runnable {
 				terrainCourant = imgTerrainEau;
 				break;
 			default:
-				terrainCourant = imgTerrainDesert;
+				terrainCourant = imgTerrainNeutre;
 				break;
 		}
 		
@@ -341,8 +351,12 @@ public class Main extends Applet implements Runnable {
 							g.drawImage(imgJauneReine,fourmiReine.getPosX()*tailleImage,
 									fourmiReine.getPosY()*tailleImage,this);
 							break;
-						case NOIR:
-							g.drawImage(imgNoirReine,fourmiReine.getPosX()*tailleImage,
+						case ROUGE:
+							g.drawImage(imgRougeReine,fourmiReine.getPosX()*tailleImage,
+									fourmiReine.getPosY()*tailleImage,this);
+							break;
+						case VERT:
+							g.drawImage(imgVertReine,fourmiReine.getPosX()*tailleImage,
 									fourmiReine.getPosY()*tailleImage,this);
 							break;
 					} // end switch
@@ -361,8 +375,12 @@ public class Main extends Applet implements Runnable {
 									g.drawImage(imgJauneSoldat,fourmiReine.getMesFourmis().get(k).getPosX()*tailleImage,
 											fourmiReine.getMesFourmis().get(k).getPosY()*tailleImage,this);
 									break;
-								case NOIR:
-									g.drawImage(imgNoirSoldat,fourmiReine.getMesFourmis().get(k).getPosX()*tailleImage,
+								case ROUGE:
+									g.drawImage(imgRougeSoldat,fourmiReine.getMesFourmis().get(k).getPosX()*tailleImage,
+											fourmiReine.getMesFourmis().get(k).getPosY()*tailleImage,this);
+									break;
+								case VERT:
+									g.drawImage(imgVertSoldat,fourmiReine.getMesFourmis().get(k).getPosX()*tailleImage,
 											fourmiReine.getMesFourmis().get(k).getPosY()*tailleImage,this);
 									break;
 							} // end switch

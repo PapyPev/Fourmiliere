@@ -106,7 +106,7 @@ public class Terrain {
 				// avec juste un id, cree un terrain avec des cellule types
 				
 				Random r1 = new Random();
-				rand = 0 + r1.nextInt(4-0); //40%
+				rand = 0 + r1.nextInt(5-0); // 1/6eme
 
 				if (rand == 0) {
 					nextCell = typeCellule;
@@ -151,7 +151,7 @@ public class Terrain {
 				}
 				
 				Random r1 = new Random();
-				int rand = 0 + r1.nextInt(5-0); // 1cellule/6
+				int rand = 0 + r1.nextInt(10-0); // 1cellule/10
 
 				if (rand != 0) {
 					nouvelleCellule.setTypeCellule(EnumCellule.NULLE);

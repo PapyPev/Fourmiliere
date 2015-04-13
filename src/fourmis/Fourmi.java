@@ -14,7 +14,7 @@ public abstract class Fourmi implements Oeuf{
 
 	
 	private int idFourmi;
-	public static enum EnumFourmi {BLEU, NOIR, JAUNE}; // classe fille seulement
+	public static enum EnumFourmi {BLEU, ROUGE, JAUNE, VERT};
 	public EnumFourmi typeFourmi;
 	private Terrain fkTerrain;
 	private boolean combattant;
