@@ -11,9 +11,8 @@ import outils.Combattant;
 
 /**
  * 
- * @author pev, fred
- * @category cours java
- * @version 20150331
+ * @author pev
+ * @version 20150413
  *
  */
 public class FourmiSoldat extends Fourmi implements Affichable, Combattant, Runnable, Observer{
@@ -34,7 +33,7 @@ public class FourmiSoldat extends Fourmi implements Affichable, Combattant, Runn
 	 * @param fkTerrain : terrainde reference
 	 * @param combattant : si la fourmi est combattante ou non
 	 * @param dureeVie : duree de vie en seconde
-	 * @param pointDeVie : point de vie
+	 * @param pointDeForce : point de vie
 	 * @param posX : position sur le terrain, ligne
 	 * @param posY : position sur le terrain, colonne
 	 * @param qtNourritureTransportee : qt nourriture transportee
@@ -42,9 +41,9 @@ public class FourmiSoldat extends Fourmi implements Affichable, Combattant, Runn
 	 * @param fkFourmiChef : reference a la fourmi chef
 	 */
 	public FourmiSoldat(int idFourmi, EnumFourmi typeFourmi, Terrain fkTerrain,
-			boolean combattant, int dureeVie, int pointDeVie, int posX, int posY,
+			boolean combattant, int dureeVie, int pointDeForce, int posX, int posY,
 			int qtNourritureTransportee, int qtNourritureTransportable, FourmiChef fkFourmiChef) {
-		super(idFourmi, typeFourmi, fkTerrain, combattant, dureeVie, pointDeVie, 
+		super(idFourmi, typeFourmi, fkTerrain, combattant, dureeVie, pointDeForce, 
 				posX, posY, qtNourritureTransportee, qtNourritureTransportable);
 		this.fkFourmiChef = fkFourmiChef;
 		this.pheromoneCourant = EnumPheromone.RIEN;
@@ -144,7 +143,7 @@ public class FourmiSoldat extends Fourmi implements Affichable, Combattant, Runn
 	
 	/**
 	 * Methode permettant de retourner aux cotes de sa reine
-	 * @throws InterruptedException 
+	 * @throws InterruptedException : gestion des erreurs
 	 */
 	public void retournerVoirSaReine() throws InterruptedException{
 		
@@ -186,7 +185,7 @@ public class FourmiSoldat extends Fourmi implements Affichable, Combattant, Runn
 	
 	/**
 	 * Methode permettant de retourner aux cotes de son chef
-	 * @throws InterruptedException 
+	 * @throws InterruptedException : gestion des erreurs
 	 */
 	public void retournerVoirSonChef() throws InterruptedException{
 		
@@ -229,7 +228,7 @@ public class FourmiSoldat extends Fourmi implements Affichable, Combattant, Runn
 	
 	/**
 	 * Methode permettant a une fourmi de fourmiller aleatoirement
-	 * @throws InterruptedException 
+	 * @throws InterruptedException : gestion des erreurs
 	 */
 	public void pheromoneRien() throws InterruptedException{
 		
@@ -259,7 +258,7 @@ public class FourmiSoldat extends Fourmi implements Affichable, Combattant, Runn
 	/**
 	 * Methode permettant a une fourmi de vivre a une distance
 	 * de la fourmiliere
-	 * @throws InterruptedException 
+	 * @throws InterruptedException  : gestion des erreurs
 	 */
 	public synchronized void pheromoneVivre() throws InterruptedException{
 		
@@ -472,11 +471,6 @@ public class FourmiSoldat extends Fourmi implements Affichable, Combattant, Runn
 		}
 		
 	}
-	
-	@Override
-	public void combattantAttaquer(){
-		// TODO : soldat, attaquer
-	}
 
 	@Override
 	public boolean isAffichable() {
@@ -486,6 +480,11 @@ public class FourmiSoldat extends Fourmi implements Affichable, Combattant, Runn
 	@Override
 	public FourmiReine getFkFourmiReine() {
 		return this.getFkFourmiChef().getFkFourmiReine();
+	}
+
+	@Override
+	public int getPointDeForce() {
+		return this.getPointDeForce();
 	}
 	
 }

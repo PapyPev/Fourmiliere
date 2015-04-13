@@ -5,8 +5,7 @@ import fourmis.FourmiReine;
 /**
  * 
  * @author pev, fred
- * @category cours java
- * @version 20150410
+ * @version 20150413
  *
  */
 public interface Affichable {

@@ -8,8 +8,7 @@ import environnements.Cellule.EnumCellule;
 /**
  * 
  * @author pev
- * @category cours java
- * @version 20150328
+ * @version 20150413
  *
  */
 public class Terrain {
@@ -25,9 +24,9 @@ public class Terrain {
 
 	/**
 	 * Constructeur d'un terrain
-	 * @param idTerrain
-	 * @param nbLigne
-	 * @param nbColonne
+	 * @param idTerrain : identifiant du terrain
+	 * @param nbLigne : nombre de ligne du terrain
+	 * @param nbColonne : nombre de colonne du terrain
 	 */
 	public Terrain(int idTerrain, int nbLigne, int nbColonne){
 		this.idTerrain = idTerrain;
@@ -87,7 +86,7 @@ public class Terrain {
 	 * @param nbLigne : nombre de cellule en ligne
 	 * @param nbColonne : nombre de cellule en colonne
 	 * @param typeCellule : type du terrain
-	 * @return
+	 * @return un terrain
 	 */
 	public ArrayList<ArrayList<Cellule>> initialiserTerrain(int nbLigne, int nbColonne, EnumCellule typeCellule){
 		

@@ -5,8 +5,7 @@ import java.util.Random;
 /**
  * 
  * @author pev
- * @category cours java
- * @version 20150328
+ * @version 20150413
  *
  */
 public class Cellule {
@@ -30,13 +29,13 @@ public class Cellule {
 	
 	/**
 	 * Constructeur d'une cellue specifique
-	 * @param idCellule
-	 * @param typeCellule
-	 * @param qtNourritureNative
-	 * @param qtNourritureCourante
-	 * @param dureeRecharge
-	 * @param presencePheromone
-	 * @param presenceCombattant
+	 * @param idCellule : identifiant de la cellule
+	 * @param typeCellule : type de la cellule
+	 * @param qtNourritureNative : quantite de nourriture native
+	 * @param qtNourritureCourante : quantite de nourriture courante
+	 * @param dureeRecharge : temps de recharge de la nourriture
+	 * @param presencePheromone : presence de pheromone ou non
+	 * @param presenceCombattant : presence de combattant ou non
 	 */
 	public Cellule(int idCellule, EnumCellule typeCellule,
 			int qtNourritureNative, int qtNourritureCourante,
@@ -69,6 +68,7 @@ public class Cellule {
 	/**
 	 * Constructeur d'une cellule d'un type
 	 * @param idCellule : identifiant de la cellule
+	 * @param typeCellule : enum type de la cellule
 	 */
 	public Cellule(int idCellule, EnumCellule typeCellule) {
 		this.idCellule = idCellule;
@@ -167,7 +167,6 @@ public class Cellule {
 	 * Methode permettant de générer la quantité de nourriture native
 	 * selon le type de cellule renseigné
 	 * @param typeDeLaCellule une cellule specifique
-	 * @return une quantite de nourriture native
 	 */
 	public void setQtNourritureSelontypeCell(EnumCellule typeDeLaCellule){
 				
@@ -198,7 +197,6 @@ public class Cellule {
 	 * Methode permettant d'obtenir la duree (en seconde) 
 	 * de recharge en nourriture en fonction du type de cellule
 	 * @param typeDeLaCellule une cellule specifique
-	 * @return une duree de recharge
 	 */
 	public void setDureeRechargeSelonTypeCell(EnumCellule typeDeLaCellule){
 				

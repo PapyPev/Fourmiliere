@@ -10,9 +10,8 @@ import outils.Combattant;
 
 /**
  * 
- * @author pev, fred
- * @category cours java
- * @version 20150331
+ * @author pev
+ * @version 20150413
  *
  */
 public class FourmiChef extends Fourmi implements Affichable, Combattant, Runnable, Observer{
@@ -33,7 +32,7 @@ public class FourmiChef extends Fourmi implements Affichable, Combattant, Runnab
 	 * @param fkTerrain : terrainde reference
 	 * @param combattant : si la fourmi est combattante ou non
 	 * @param dureeVie : duree de vie en seconde
-	 * @param pointDeVie : point de vie
+	 * @param pointDeForce : point de force
 	 * @param posX : position sur le terrain, ligne
 	 * @param posY : position sur le terrain, colonne
 	 * @param qtNourritureTransportee : qt nourriture transportee
@@ -44,10 +43,10 @@ public class FourmiChef extends Fourmi implements Affichable, Combattant, Runnab
 
 	 */
 	public FourmiChef(int idFourmi, EnumFourmi typeFourmi, Terrain fkTerrain,
-			boolean combattant, int dureeVie, int pointDeVie, int posX, int posY,
+			boolean combattant, int dureeVie, int pointDeForce, int posX, int posY,
 			int qtNourritureTransportee, int qtNourritureTransportable, FourmiReine fkFourmiReine, 
 			int qtNourritureRecoltee, int nbSoldatVivant) {
-		super(idFourmi, typeFourmi, fkTerrain, combattant, dureeVie, pointDeVie, 
+		super(idFourmi, typeFourmi, fkTerrain, combattant, dureeVie, pointDeForce, 
 				posX, posY, qtNourritureTransportee, qtNourritureTransportable);
 		this.fkFourmiReine = fkFourmiReine;
 		this.qtNourritureRecoltee = qtNourritureRecoltee;
@@ -96,7 +95,6 @@ public class FourmiChef extends Fourmi implements Affichable, Combattant, Runnab
 
 	/**
 	 * Fonction qui met a jour le nombre de soldat vivant
-	 * @param val
 	 */
 	public synchronized void miseAJourNbSoldatVivants(){
 		// Decremente le nombre 
@@ -174,13 +172,13 @@ public class FourmiChef extends Fourmi implements Affichable, Combattant, Runnab
 	}
 	
 	@Override
-	public void combattantAttaquer(){
-		// TODO : chef, attaquer
+	public boolean isAffichable() {
+		return this.getDureeVie() > 0;
 	}
 
 	@Override
-	public boolean isAffichable() {
-		return this.getDureeVie() > 0;
+	public int getPointDeForce() {
+		return this.getPointDeForce();
 	}
 
 }

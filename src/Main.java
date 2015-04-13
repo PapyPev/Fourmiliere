@@ -1,4 +1,5 @@
 import java.applet.Applet;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.util.ArrayList;
@@ -7,15 +8,92 @@ import java.util.Random;
 import environnements.Terrain;
 import environnements.Cellule.EnumCellule;
 import fourmis.FourmiReine;
-import fourmis.FourmiReine.EnumPheromone;
 
-
+/**
+ * 
+ * @author pev
+ * @version 20150413
+ *
+ */
 public class Main extends Applet implements Runnable {
+	
+	/* =======================DOUBLE BUFFERING============================ */
+	
+	/* ************************************************ */
+	/* Tout ce qui est nécessaire au double buffering 
+	 * pris sur : http://www.developer.com/repository/softwaredev/content/article/2000/06/20/SDtravisdblbuf/DoubleBufferApplet.java */
+	/* ************************************************ */
+	private int width=-1;
+	private int height=-1;
+	// The offscreen image
+	private Image offscreen;
+
+	// switch: are we double buffering or not?
+	private boolean dbon = false;
+
+	// Use this to turn double buffering on and off
+	protected void setDoubleBuffering( boolean dbon ) {
+		this.dbon = dbon;
+		if (!dbon) {
+			offscreen = null;
+		}
+	}
+
+	// Depending on the value of our switch, we either call our
+	// special code, or just call the default code
+	@Override
+	public void update( Graphics g ) {
+		if (dbon) {
+			updateDoubleBufffered( g );
+		} else { 
+			super.update( g );
+		}
+	}
+
+	// Do the drawing to an offscreen buffer -- maybe
+	private void updateDoubleBufffered( Graphics g ) {
+
+		// Let's make sure we have an offscreen buffer, and that
+		// it's the right size.  If the applet has been resized,
+		// our buffer will be the wrong size and we need to make
+		// a new one
+		Dimension d = getSize();
+		if (offscreen == null || width!=d.width || height!=d.height || offscreen==null) {
+			width = d.width;
+			height = d.height;
+			if (width>0 || height>0) {
+				offscreen = createImage( width, height );
+			} else offscreen = null;
+		}
+	
+		// If we still don't have one, give up
+		if (offscreen == null) return;
+	
+		// Get the off-screen graphics object
+		Graphics gg = offscreen.getGraphics();
+	
+		// Clear the off-screen graphics object
+		gg.setColor( getBackground() );
+		gg.fillRect( 0, 0, width, height );
+		gg.setColor( getForeground() );
+	
+		// Draw to the off-screen graphics object
+		paint( gg );
+	
+		// We don't need this Graphics object anymore
+		gg.dispose();
+	
+		// Finally, we transfer the newly-drawn stuff right to the
+		// screen
+		g.drawImage( offscreen, 0, 0, null );
+	}
+	
+	/* ************************************************ */
 
 	/* ===========================ATRB================================ */
 	
 	private static final long serialVersionUID = 1L;
-	
+
 	// Terrain courant
 	private Terrain monTerrain;
 	private Image terrainCourant;
@@ -24,8 +102,8 @@ public class Main extends Applet implements Runnable {
 	ArrayList<FourmiReine> lesFourmilieres = new ArrayList<FourmiReine>();
 	int lignes = 30;
 	int colonnes = 30;
-	int nbReine = 3;
-	int nbOeufParReine = 20; //mini : 5
+	int nbReine = 10;
+	int nbOeufParReine = 10; //mini : 5
 	double probaOeufChef = 0.1;
     
 	// Definition des images
@@ -58,6 +136,7 @@ public class Main extends Applet implements Runnable {
 	// Definition des Autres
 	private Image   imgTombe;
 	private Image   imgTombeReine;
+	private Image   imgCombat;
 	
 	// Thread de controle
     private Thread  thread;
@@ -87,7 +166,8 @@ public class Main extends Applet implements Runnable {
 		
 		// Definition de la fenetre d'affichage
 		this.setSize(lignes*tailleImage, colonnes*tailleImage);
-		
+		this.setDoubleBuffering(true);
+						
 		// Chargement des types de terrain (visuel seulement)
 		imgTerrainDesert=getImage(getCodeBase(),"./img/terrain/desert.png");
 		imgTerrainEau=getImage(getCodeBase(),"./img/terrain/eau.png");
@@ -119,9 +199,26 @@ public class Main extends Applet implements Runnable {
 		// Chargement des types d'images autre
 		imgTombe=getImage(getCodeBase(),"./img/autre/tombe.png");
 		imgTombeReine=getImage(getCodeBase(),"./img/autre/tombereine.png");
+		imgCombat=getImage(getCodeBase(),"./img/autre/combat.png");
 		
-		// Definition du terrain courant (visuel seulement)
-		terrainCourant = imgTerrainDesert;
+		// Definition du terrain courant (visuel seulement) - Terrain random
+		Random r0 = new Random();
+		int valeurRandom = 0 + r0.nextInt(3-0);
+		switch(valeurRandom){
+			case 0:
+				terrainCourant = imgTerrainJungle;
+				break;
+			case 1:
+				terrainCourant = imgTerrainDesert;
+				break;
+			case 2:
+				terrainCourant = imgTerrainEau;
+				break;
+			default:
+				terrainCourant = imgTerrainDesert;
+				break;
+		}
+		
 		
 		// Initialisation du terrain - Pas besoin de type si random
 		//monTerrain = new Terrain(1, lignes, colonnes, EnumCellule.PLANTE);
@@ -137,7 +234,7 @@ public class Main extends Applet implements Runnable {
 			initY = 0 + r2.nextInt(colonnes-0);
 						
 			// Creation de la FourmiReine
-			FourmiReine uneFourmiReine = new FourmiReine(i, monTerrain, false, 100, 100, initX, initY, 0, 0);
+			FourmiReine uneFourmiReine = new FourmiReine(i, monTerrain, false, 200, 100, initX, initY, 0, 0);
 			Thread nouveauThread = new Thread(uneFourmiReine);
 			nouveauThread.start();
 			lesFourmilieres.add(uneFourmiReine);
@@ -150,16 +247,16 @@ public class Main extends Applet implements Runnable {
 			
 		}
 		
-		//Eclosion des oeufs
+		// Eclosion des oeufs
 		for (int i = 0; i < lesFourmilieres.size(); i++){
 			lesFourmilieres.get(i).eclosion();
 		}
 		
 		
 		// Informer aux fourmis d'aller chercher de la nourriture
-		for (int i = 0; i < lesFourmilieres.size(); i++){
-			lesFourmilieres.get(i).informerParPheromone(EnumPheromone.VIVRE); // autours fourmiliere
-		}
+		//for (int i = 0; i < lesFourmilieres.size(); i++){
+		//	lesFourmilieres.get(i).informerParPheromone(EnumPheromone.VIVRE); // autours fourmiliere
+		//}
 		
 	}
 	
@@ -295,7 +392,6 @@ public class Main extends Applet implements Runnable {
 
 		} // end while
 
-			
 	}
 
 }

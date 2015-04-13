@@ -7,9 +7,8 @@ import environnements.Terrain;
 
 /**
  * 
- * @author pev, fred
- * @category cours java
- * @version 20150331
+ * @author pev
+ * @version 20150413
  *
  */
 public class FourmiReine extends Fourmi implements Runnable {
@@ -58,17 +57,17 @@ public class FourmiReine extends Fourmi implements Runnable {
 	 * @param fkTerrain : association au terrain
 	 * @param combattant : si la fourmi est une combattante
 	 * @param dureeVie : duree de vie en seconde d'une fourmi
-	 * @param pointDeVie : point de vie
+	 * @param pointDeForce : point de force
 	 * @param posX : position sur le terrain, ligne
 	 * @param posY : position sur le terrain, colonne
 	 * @param qtNourritureTransportee : qt de nourriture transportee
 	 * @param qtNourritureTransportable : qt de nourriture transportable
 	 */
 	public FourmiReine(int idFourmi, Terrain fkTerrain,
-			boolean combattant, int dureeVie, int pointDeVie, int posX, int posY,
+			boolean combattant, int dureeVie, int pointDeForce, int posX, int posY,
 			int qtNourritureTransportee, int qtNourritureTransportable) {
 		super(idFourmi, setRandomEnumCellule(), fkTerrain, combattant, dureeVie, 
-				pointDeVie, posX, posY, qtNourritureTransportee, qtNourritureTransportable);
+				pointDeForce, posX, posY, qtNourritureTransportee, qtNourritureTransportable);
 		this.unPheromone = new Pheromone();
 	}
 	
@@ -195,7 +194,6 @@ public class FourmiReine extends Fourmi implements Runnable {
 	/**
 	 * Methode permettant d'appeller la fonction d'eclosion de la classe Oeufs.
 	 * La methode de la classe oeufs permet de lancer un thread par oeufs.
-	 * @return 
 	 */
 	public synchronized void eclosion(){
 		
@@ -209,35 +207,38 @@ public class FourmiReine extends Fourmi implements Runnable {
 	}
 	
 	/**
-	 * 
+	 * Methode permettant a une fourmi reine de vivre sa vie
 	 */
 	@Override
 	public void run(){
+		
+		int vieInitiale = this.getDureeVie();
 				
 		// Tant qu'elle a de la vie (FouriReine Vie = 100)
 		while(this.getDureeVie() > 0){
-			
+						
 			try {
 				this.seDeplacer(this.getPosX(), this.getPosY());
 			} catch (InterruptedException e1) {
 				e1.printStackTrace();
 			}
 			
-			if (this.getDureeVie() == 90) {
+			// A 90% de la vie de la reine on se deplace aleatoirement
+			if (this.getDureeVie() == (int)Math.round((double)(vieInitiale*0.9))) {
 				this.informerParPheromone(EnumPheromone.RIEN); // deplacement random
 			}
 			
-			if (this.getDureeVie() == 50) {
+			// A 70% de la vie de la reine on part cherche de la nourriture
+			if (this.getDureeVie() == (int)Math.round((double)(vieInitiale*0.7))) {
 				this.informerParPheromone(EnumPheromone.NOURRITURE);
 			}
 			
-			// Attendre 1sec pour chaque action de la reine
-			try {
-				System.out.println("QUEEN"+this.getIdFourmi()+":"+getDureeVie());
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+			// A 50% de la vie de la reine on attaque les autres fourmis (gue-guerre!)
+			if (this.getDureeVie() == (int)Math.round((double)(vieInitiale*0.5))) {
+				this.informerParPheromone(EnumPheromone.ATTAQUER);
 			}
+			
+			System.out.println("R:"+this.getDureeVie());
 			
 		}
 		

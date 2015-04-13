@@ -5,7 +5,6 @@ import environnements.Terrain;
 /**
  * 
  * @author pev
- * @category cours java
  * @version 20150328
  *
  */
@@ -33,21 +32,21 @@ public abstract class Fourmi implements Oeuf{
 	 * @param fkTerrain : association au terrain
 	 * @param combattant : si la fourmi est une combattante
 	 * @param dureeVie : duree de vie en seconde d'une fourmi
-	 * @param pointDeVie : point de vie d'une fourmi
+	 * @param pointDeForce : point de vie d'une fourmi
 	 * @param posX : position sur le terrain, ligne
 	 * @param posY : position sur le terrain, colonne
 	 * @param qtNourritureTransportee : qt de nourriture transportee
 	 * @param qtNourritureTransportable : qt de nourriture transportable
 	 */
 	public Fourmi(int idFourmi, EnumFourmi typeFourmi, Terrain fkTerrain,
-			boolean combattant, int dureeVie, int pointDeVie, int posX, int posY,
+			boolean combattant, int dureeVie, int pointDeForce, int posX, int posY,
 			int qtNourritureTransportee, int qtNourritureTransportable) {
 		this.idFourmi = idFourmi;
 		this.typeFourmi = typeFourmi;
 		this.fkTerrain = fkTerrain;
 		this.combattant = combattant;
 		this.dureeVie = dureeVie;
-		this.pointDeVie = pointDeVie;
+		this.pointDeVie = pointDeForce;
 		this.posX = posX;
 		this.posY = posY;
 		this.qtNourritureTransportee = qtNourritureTransportee;
@@ -142,7 +141,7 @@ public abstract class Fourmi implements Oeuf{
 	 * Methode permettant de se deplacer aux coordonnees x, y
 	 * @param x : coordonnees en ligne
 	 * @param y : coordonnees en colonne
-	 * @throws InterruptedException 
+	 * @throws InterruptedException : gestion des erreurs
 	 */
 	public synchronized void seDeplacer(int x, int y) throws InterruptedException{
 		this.posX = x;

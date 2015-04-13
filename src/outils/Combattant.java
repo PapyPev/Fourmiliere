@@ -1,17 +1,24 @@
 package outils;
 
+import fourmis.Fourmi.EnumFourmi;
+
 /**
  * 
- * @author pev, fred
- * @category cours java
- * @version 20150408
+ * @author pev
+ * @version 20150413
  *
  */
 public interface Combattant {
-
-	/**
-	 * Methode devant etre redefinie pour pouvoir attaquer
-	 */
-	void combattantAttaquer();
+	
+	int getIdFourmi();
+	
+	int getPointDeVie();
+	void setPointDeVie(int pointDeVie);
+	
+	int getPointDeForce();
+	
+	EnumFourmi getTypeFourmi();
+	
+	
 	
 }
