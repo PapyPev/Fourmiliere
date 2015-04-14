@@ -101,10 +101,10 @@ public class Main extends Applet implements Runnable {
 	
 	// Parametres de lancement
 	ArrayList<FourmiReine> lesFourmilieres = new ArrayList<FourmiReine>();
-	int lignes = 30;
-	int colonnes = 30;
+	int lignes = 40;
+	int colonnes = 40;
 	int nbReine = 3; //mini : 1
-	int nbOeufParReine = 5; //mini : 5
+	int nbOeufParReine = 15; //mini : 5
 	double probaOeufChef = 0.1;
     
 	// Definition des images
@@ -292,8 +292,8 @@ public class Main extends Applet implements Runnable {
 			}
 			
 			// --- Affichage des cellules -------------------------
-			for (int i = 0; i < monTerrain.getNbLigne(); i++) {
-				for (int j = 0; j < monTerrain.getNbColonne(); j++) {
+			for (int i = 0; i < monTerrain.getNbColonne(); i++) {
+				for (int j = 0; j < monTerrain.getNbLigne(); j++) {
 					
 					switch(monTerrain.getACellule(i, j).getTypeCellule()){
 						case ARBRE:

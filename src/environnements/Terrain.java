@@ -151,10 +151,11 @@ public class Terrain {
 				}
 				
 				Random r1 = new Random();
-				int rand = 0 + r1.nextInt(10-0); // 1cellule/10
+				int rand = 0 + r1.nextInt(20-0); // 1cellule/20
 
 				if (rand != 0) {
 					nouvelleCellule.setTypeCellule(EnumCellule.NULLE);
+					nouvelleCellule.setQtNourritureCourante(0);
 				}
 				
 				tmpLigne.add(nouvelleCellule);
@@ -234,7 +235,7 @@ public class Terrain {
 	 * @param y : position en colonne
 	 * @return une cellule
 	 */
-	public Cellule getACellule(int x, int y){
+	public synchronized Cellule getACellule(int x, int y){
 		return this.indexTerrain.get(y).get(x);
 	}
 

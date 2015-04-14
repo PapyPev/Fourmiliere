@@ -175,13 +175,13 @@ public class Cellule {
 				this.qtNourritureNative = 50;
 				break;
 			case BOUE:
-				this.qtNourritureNative = 5;
+				this.qtNourritureNative = 10;
 				break;
 			case PLANTE:
-				this.qtNourritureNative = 15;
+				this.qtNourritureNative = 20;
 				break;
 			case TERRIER:
-				this.qtNourritureNative = 20;
+				this.qtNourritureNative = 5;
 				break;
 			case FOURMILIERE:
 				this.qtNourritureNative = 0;

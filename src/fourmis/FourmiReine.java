@@ -25,7 +25,7 @@ public class FourmiReine extends Fourmi implements Runnable {
 	private Pheromone unPheromone;
 	
 	private ArrayList<Affichable> mesFourmis = new ArrayList<>();
-	private int VIE_SOLDAT = 50; //nb deplacements
+	private int VIE_SOLDAT = 100; //nb deplacements
 	private double PROBA_VIE_SOLDAT = 0.1; // +/- x%
 	
 	/* ===========================CONST================================ */
@@ -139,7 +139,7 @@ public class FourmiReine extends Fourmi implements Runnable {
 			
 			// Creation des fourmi chef
 			FourmiChef uneFourmiChef = new FourmiChef(nbOeufsConstruits, this.typeFourmi, 
-					this.getFkTerrain(), false, this.VIE_SOLDAT*2, 180, this.getPosX(), this.getPosY(), 
+					this.getFkTerrain(), false, this.VIE_SOLDAT*2, 50, this.getPosX(), this.getPosY(), 
 					0, 0, this, 0, nbOeufsSoldatParChef);
 			
 			// Ajout des oeufs a eclore dans l'AL
@@ -164,7 +164,7 @@ public class FourmiReine extends Fourmi implements Runnable {
 				int vieSoldat = vieMin + r.nextInt(vieMax-vieMin);
 
 				FourmiSoldat uneFourmiSoldat = new FourmiSoldat(nbOeufsConstruits, this.typeFourmi, 
-						this.getFkTerrain(), false, vieSoldat, 100, this.getPosX(), this.getPosY(), 
+						this.getFkTerrain(), false, vieSoldat, 10, this.getPosX(), this.getPosY(), 
 						0, 5, uneFourmiChef);
 				
 				// Ajouter des oeufs a eclore dans l'AL
@@ -225,16 +225,19 @@ public class FourmiReine extends Fourmi implements Runnable {
 			
 			// A 90% de la vie de la reine on se deplace aleatoirement
 			if (this.getDureeVie() == (int)Math.round((double)(vieInitiale*0.9))) {
+				System.out.println("================ NOURRITURE ================");
 				this.informerParPheromone(EnumPheromone.NOURRITURE); // deplacement random
 			}
 			
-			// A 70% de la vie de la reine on part cherche de la nourriture
-			if (this.getDureeVie() == (int)Math.round((double)(vieInitiale*0.7))) {
+			// A 80% de la vie de la reine on part cherche de la nourriture
+			if (this.getDureeVie() == (int)Math.round((double)(vieInitiale*0.5))) {
+				System.out.println("================ RIEN ================");
 				this.informerParPheromone(EnumPheromone.RIEN);
 			}
 			
 			// A 50% de la vie de la reine on attaque les autres fourmis (gue-guerre!)
-			if (this.getDureeVie() == (int)Math.round((double)(vieInitiale*0.5))) {
+			if (this.getDureeVie() == (int)Math.round((double)(vieInitiale*0.4))) {
+				System.out.println("================ ATTAQUER ================");
 				this.informerParPheromone(EnumPheromone.ATTAQUER);
 			}
 			

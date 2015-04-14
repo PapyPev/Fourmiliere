@@ -20,7 +20,7 @@ public class FourmiSoldat extends Fourmi implements Affichable, Combattant, Runn
 	/* ===========================ATRB================================ */
 	
 	private int DIST_MAX_REINE = 2; //nb de cellule autours de la reine apres naissance
-	private int DIST_VISUELLE = 2; // nb de cellule vues autours de cette fourmi
+	private int DIST_VISUELLE = 1; // nb de cellule vues autours de cette fourmi
 	private FourmiChef fkFourmiChef;
 	private EnumPheromone pheromoneCourant;
 	
@@ -73,7 +73,7 @@ public class FourmiSoldat extends Fourmi implements Affichable, Combattant, Runn
 	 * @param y
 	 * @throws InterruptedException
 	 */
-	public void seDeplacerPheromone(int x, int y) throws InterruptedException{
+	public synchronized void seDeplacerPheromone(int x, int y) throws InterruptedException{
 		this.seDeplacer(x, y);
 		this.getFkFourmiChef().getFkFourmiReine().getFkTerrain().getACellule(x, y).setPresencePheromone(true);
 	}
@@ -129,6 +129,8 @@ public class FourmiSoldat extends Fourmi implements Affichable, Combattant, Runn
 
 		}
 		
+		System.out.println("finPrendreNourriture");
+		
 	}
 
 	/**
@@ -140,6 +142,7 @@ public class FourmiSoldat extends Fourmi implements Affichable, Combattant, Runn
 		this.getFkFourmiChef().setQtNourritureRecoltee(this.getFkFourmiChef().getQtNourritureRecoltee() + this.getQtNourritureTransportee());
 		// Remet a zero la quantite de la fourmi
 		this.setQtNourritureTransportee(0);
+		System.out.println("Depot");
 	}
 	
 	/**
@@ -195,7 +198,7 @@ public class FourmiSoldat extends Fourmi implements Affichable, Combattant, Runn
 	 * Methode permettant de retourner aux cotes de son chef
 	 * @throws InterruptedException : gestion des erreurs
 	 */
-	public void retournerVoirSonChef() throws InterruptedException{
+	public synchronized void retournerVoirSonChef() throws InterruptedException{
 		
 		int deplacementX;
 		int deplacementY;
@@ -227,7 +230,7 @@ public class FourmiSoldat extends Fourmi implements Affichable, Combattant, Runn
 			this.seDeplacerPheromone(this.getPosX()+deplacementX, this.getPosY()+deplacementY);
 			
 		}
-		
+				
 	}
 	
 	/* ===========================PHEROMONE============================= */
@@ -305,119 +308,120 @@ public class FourmiSoldat extends Fourmi implements Affichable, Combattant, Runn
 	 */
 	public void pheromoneNourriture() throws InterruptedException{
 		
-		boolean presencePheromoneACote;
-		int destinationX;
-		int destinationY;
-		int distanceVisuellePosX;
-		int distanceVisuellePosY;
+		// TODO : pas operationnel
 		
 		while(pheromoneCourant == EnumPheromone.NOURRITURE && this.getDureeVie() > 0){
+		
+			int posX = this.getPosX();
+			int posY = this.getPosY();
+			int decalX = -this.DIST_VISUELLE;
+			int decalY = -this.DIST_VISUELLE;
+			int nextPosX = posX;
+			int nextPosY = posY;
 			
-			presencePheromoneACote = false;
-			destinationX = 0;
-			destinationY = 0;
-			distanceVisuellePosX = this.getPosX();
-			distanceVisuellePosY = this.getPosY();
-			
-			// Recherche d'une cellule visuelle avec des pheromones
-			for (int i = -this.DIST_VISUELLE; i < this.DIST_VISUELLE+1; i++) {
-				for (int j = -this.DIST_VISUELLE; j < this.DIST_VISUELLE+1; j++) {
+			boolean presencePheromone = false;
+			boolean presenceNourriture = false;		
+					
+			// Verification presence pheromone ou nourriture
+			while(!presencePheromone && !presenceNourriture && decalX <= this.DIST_VISUELLE){
+				while(!presencePheromone && !presenceNourriture && decalY <= this.DIST_VISUELLE){
+					
+					nextPosX = posX+decalX;
+					nextPosY = posY+decalY;
+									
+					// Sortie en ligne
+					if(nextPosX < 0 || nextPosX >= this.getFkTerrain().getNbLigne()){
+						nextPosX = posX;
+					}
+					
+					// Sortie en colonne
+					if(nextPosY < 0 || nextPosY >= this.getFkTerrain().getNbColonne()){
+						nextPosY = posY;
+					}
+					
+					// Verification presence Pheromone
+					if (this.getFkTerrain().getACellule(nextPosX, nextPosY).isPresencePheromone()) {
+						presencePheromone = true;
+					}
+					
+					// Verification presence Nourriture
+					if (this.getFkTerrain().getACellule(nextPosX, nextPosY).getQtNourritureCourante() > 0) {
+						presencePheromone = true;
+					}
 										
-					distanceVisuellePosX = this.getPosX() + i;
-					distanceVisuellePosY = this.getPosY() + j;
-					
-					// Si on depasse les limites du terrain en ligne
-					if (distanceVisuellePosX < 0 || distanceVisuellePosX >= this.getFkFourmiChef().getFkFourmiReine().getFkTerrain().getNbLigne()) {
-						distanceVisuellePosX = this.getPosX();
+					decalY = decalY+1;
+				}
+				
+				decalX = decalX +1;
+			}
+						
+			// --- Presence de Pheromone ou Nourriture -------------------------------------
+			if(presencePheromone || presenceNourriture){
+				
+				int depX = 0;
+				int depY = 0;
+				
+				// Tant qu'on n'est pas sur la cellule de dest
+				while (posX != nextPosX && this.getDureeVie() > 0) {
+					while (posY != nextPosY && this.getDureeVie() > 0) {
+												
+						if (posX < nextPosX) {
+							depX = 1;
+						}
+						if (posX > nextPosX) {
+							depX = -1;
+						}
+						if (posY < nextPosY) {
+							depY = 1;
+						}
+						if (posY > nextPosY) {
+							depY = -1;
+						}
+						
+						this.seDeplacer(posX+depX, posY+depY);
+						posX = this.getPosX();
+						posY = this.getPosY();
+						
 					}
 					
-					// Si on depasse les limites du terrain en colonne
-					if(distanceVisuellePosY < 0 || distanceVisuellePosY >= this.getFkFourmiChef().getFkFourmiReine().getFkTerrain().getNbColonne()){
-						distanceVisuellePosY = this.getPosY();
-					}
-					
-					// Verification presence pheromone
-					if(this.getFkTerrain().getACellule(distanceVisuellePosX, distanceVisuellePosY).isPresencePheromone()){
-						presencePheromoneACote = true;
-						destinationX = i;
-						destinationY = j;
-					}
-					
-				} // end for
-			} //end for
-			
-			// S'il n'y a pas de cellule a cote on se deplace random
-			if(!presencePheromoneACote){
+				}
 								
+			} 
+			
+			// --- Pas de Presence particuliere --------------------------------------------
+			else {
+								
+				nextPosX = this.getPosX();
+				nextPosY = this.getPosY();
+				
 				// Valeur de deplacement aleatoire a +/- 1
 				Random r1 = new Random();
 				Random r2 = new Random();
-				int deplacementX = r1.nextInt(2 + 1) -1;
-				int deplacementY = r2.nextInt(2 + 1) -1;
+				int rand1 = r1.nextInt(2 + 1) -1;
+				int rand2 = r2.nextInt(2 + 1) -1;
 				
-				// Calcul du prochain deplacement
-				int nextDeplacementX = this.getPosX()+deplacementX;
-				int nextDeplacementY = this.getPosY()+deplacementY;
+				nextPosX = posX + rand1;
+				nextPosY = posY + rand2;
 				
-				// Verification du deplacement
-				if (nextDeplacementX < 0 || nextDeplacementX >= this.getFkFourmiChef().getFkFourmiReine().getFkTerrain().getNbLigne()){
-					nextDeplacementX = this.getPosX();
-					
-				}
-				if (nextDeplacementY < 0 || nextDeplacementY >= this.getFkFourmiChef().getFkFourmiReine().getFkTerrain().getNbColonne()){
-					nextDeplacementY = this.getPosY();
-
+				// Sortie en ligne
+				if(nextPosX < 0 || nextPosX >= this.getFkTerrain().getNbLigne()){
+					nextPosX = posX;
 				}
 				
-				// Deplacement
-				this.seDeplacer(nextDeplacementX, nextDeplacementY);
+				// Sortie en colonne
+				if(nextPosY < 0 || nextPosY >= this.getFkTerrain().getNbColonne()){
+					nextPosY = posY;
+				}
+				
+				this.seDeplacer(nextPosX, nextPosY);
 				
 			}
 			
-			
-			// Il y a presence de pheromone
-			else {
+			// --- Verification Cellule en cours --------------------------------------------
+			if (this.getFkTerrain().getACellule(posX, posY).getQtNourritureCourante() > 0) {
 				
-				// TODO : Terminer l'algo, partie pheromone
-				
-				int deplacementX;
-				int deplacementY;
-				
-				// Tant qu'on n'est pas sur la cellule
-				while (this.getPosX() != destinationX 
-					&& this.getPosY() != destinationY
-					&& this.getDureeVie() > 0) {
-					
-					deplacementX = 0;
-					deplacementY = 0;
-					
-					if(this.getPosX() > destinationX){
-						deplacementX = -1;
-					}
-					
-					if (this.getPosX() < destinationX) {
-						deplacementX = 1;
-					}
-					
-					if(this.getPosY() > destinationY){
-						deplacementY = -1;
-					}
-					
-					if (this.getPosY() < destinationY) {
-						deplacementY = 1;
-					}
-					
-					this.seDeplacerPheromone(this.getPosX()+deplacementX, this.getPosY()+deplacementY);
-					
-				}
-				
-			}
-			
-			// S'il y a de la nourriture sur la case courante
-			if(this.getFkFourmiChef().getFkFourmiReine().getFkTerrain().getACellule(this.getPosX(), this.getPosY()).getQtNourritureCourante() > 0){
-				
-				System.out.println("BOUFFE");
-				
+				System.out.println("Bouffe");
+								
 				// On recupere la nourriture
 				this.prendreNourriture();
 				
@@ -429,18 +433,15 @@ public class FourmiSoldat extends Fourmi implements Affichable, Combattant, Runn
 				
 			} else {
 				
-				// Toute la nourriture est prise, on retire les pherom
-				this.getFkFourmiChef().getFkFourmiReine().getFkTerrain().getACellule(this.getPosX(), this.getPosY()).setPresencePheromone(false);
+				this.getFkTerrain().getACellule(this.getPosX(), this.getPosY()).setPresencePheromone(false);
 				
 			}
-			
-			
-			
-		} //end while
 		
-		
+		} // end while general
 		
 	}
+	
+	
 	
 	/**
 	 * Methode permettant a une fourmi, si elle est soldat, d'attaquer
@@ -468,11 +469,6 @@ public class FourmiSoldat extends Fourmi implements Affichable, Combattant, Runn
 					}
 					break;
 				case VIVRE:
-					try {
-						this.retournerVoirSaReine();
-					} catch (InterruptedException e1) {
-						e1.printStackTrace();
-					}
 					try {
 						this.pheromoneVivre();
 					} catch (InterruptedException e) {
