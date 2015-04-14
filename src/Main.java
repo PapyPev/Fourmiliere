@@ -1,4 +1,5 @@
 import java.applet.Applet;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -102,7 +103,7 @@ public class Main extends Applet implements Runnable {
 	ArrayList<FourmiReine> lesFourmilieres = new ArrayList<FourmiReine>();
 	int lignes = 30;
 	int colonnes = 30;
-	int nbReine = 10; //mini : 1
+	int nbReine = 3; //mini : 1
 	int nbOeufParReine = 5; //mini : 5
 	double probaOeufChef = 0.1;
     
@@ -282,13 +283,10 @@ public class Main extends Applet implements Runnable {
 		
 		while(true){
 			
-			//g.setColor(Color.PINK);
-
-			//g.fillOval(i*13, j*10, FR.getTerrain().getCase(i, j).getNourriture()/10, FR.getTerrain().getCase(i, j).getNourriture()/10);
 			
 			// --- Affichage du terrain -------------------------
-			for (int i = 0; i < monTerrain.getNbLigne()+2; i++) {
-				for (int j = 0; j < monTerrain.getNbColonne()+2; j++) {
+			for (int i = 0; i < monTerrain.getNbLigne(); i++) {
+				for (int j = 0; j < monTerrain.getNbColonne(); j++) {
 					g.drawImage(terrainCourant,i*tailleImage,j*tailleImage,this);
 				}
 			}
@@ -333,6 +331,14 @@ public class Main extends Applet implements Runnable {
 							g.drawImage(imgSolNulle,i*tailleImage,j*tailleImage,this);
 							break;
 					} // end switch
+					
+					// Affichage des pheromones
+					if (monTerrain.getACellule(i, j).isPresencePheromone()) {
+						g.setColor(Color.PINK);
+						g.fillOval(i*tailleImage, j*tailleImage, 10, 10);
+					}
+					
+					
 				
 				}
 			}

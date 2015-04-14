@@ -165,7 +165,7 @@ public class FourmiReine extends Fourmi implements Runnable {
 
 				FourmiSoldat uneFourmiSoldat = new FourmiSoldat(nbOeufsConstruits, this.typeFourmi, 
 						this.getFkTerrain(), false, vieSoldat, 100, this.getPosX(), this.getPosY(), 
-						0, 0, uneFourmiChef);
+						0, 5, uneFourmiChef);
 				
 				// Ajouter des oeufs a eclore dans l'AL
 				this.oeufAEclore.add(uneFourmiSoldat);
