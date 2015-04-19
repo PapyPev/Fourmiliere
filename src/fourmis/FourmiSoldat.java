@@ -69,9 +69,9 @@ public class FourmiSoldat extends Fourmi implements Affichable, Combattant, Runn
 	
 	/**
 	 * Methode permettant a une fourmi de se deplacer en deposant des pheromones
-	 * @param x
-	 * @param y
-	 * @throws InterruptedException
+	 * @param x : coordonnee en ligne
+	 * @param y : coordonnee en colonne
+	 * @throws InterruptedException : gestion des erreurs
 	 */
 	public synchronized void seDeplacerPheromone(int x, int y) throws InterruptedException{
 		this.seDeplacer(x, y);
