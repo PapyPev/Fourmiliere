@@ -18,3 +18,10 @@ et la ramènent à la fourmi­chef.
 - Les fourmis soldats ont une durée de vie limitée.
 - Lorsque toutes le fourmis soldats sont mortes, leur fourmi chef meurt
 et la reine peut aller fonder une autre fourmilière.
+
+
+###TODO
+- Combat : Executer un combat si deux fourmis sont sur la meme cellule
+- Fourmi Soldat : Finir la recherche de nourriture
+- Applet : Verifier l'affichage des tombes
+- Applet : Ajouter des boutons de controle pour envoyer des pheromones
