@@ -22,6 +22,8 @@ et la reine peut aller fonder une autre fourmilière.
 
 ###TODO
 - Combat : Executer un combat si deux fourmis sont sur la meme cellule
+- Fourmi Chef : Faire fourmiller les chefs autours de la fourmiliere
 - Fourmi Soldat : Finir la recherche de nourriture
+- Fourmi Chef/Soldat : Definir les actions pour le pheromone d'attaque
 - Applet : Verifier l'affichage des tombes
 - Applet : Ajouter des boutons de controle pour envoyer des pheromones
