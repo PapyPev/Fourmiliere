@@ -149,6 +149,10 @@ public class Main extends Applet implements Runnable {
     
     /* ===========================START============================= */
     
+    public static void main(String[] args) {
+    	
+    }
+    
     @Override
 	public void start() {
 		//necessaire pour demarrer l'animation
