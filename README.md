@@ -1,67 +1,20 @@
 #La Fourmiliere#
 IMERIR2A - 20150419 - Cours de Java
 
-Objectifs : 
+###Objectifs : 
 * Modélisation objet
 * Notion de Design Pattern (Observer/Observable)
 * Notions de Thread
 * Notions d'interface
 * Notions d'Applet
 
-Contenu : 
-- \src
-> - \environnements
->> - Cellule.java
->> - Terrain.java
-> - \fourmis
->> - Fourmi.java
->> - FourmiChef.java
->> - FourmiRein.java
->> - FourmiSoldat.java
-> - \img
->> - \autre
->>> - combat.png
->>> - contour.png
->>> - tombe.png
->>> - tombeReine.png
->> - \fourmi
->>> - \bleu
->>>> - chef.png
->>>> - reine.png
->>>> - soldat.png
->>> - \rouge
->>>> - chef.png
->>>> - reine.png
->>>> - soldat.png
->>> - \vert
->>>> - chef.png
->>>> - reine.png
->>>> - soldat.png
->>> - \jaune
->>>> - chef.png
->>>> - reine.png
->>>> - soldat.png
->> - \sol
->>> - arbre.png
->>> - boue.png
->>> - fourmiliere.png
->>> - nulle.png
->>> - plante.png
->>> - terrier.png
->> - \terrain
->>> - desert.png
->>> - eau.png
->>> - jungle.png
->>> - neutre.png
-> - \outils
->> - Affichable.java
->> - Combat.java
->> - Combattant.java
->> - Oeuf.java
->> - Pheromone.java
-> - \uml
->> - model.png
->> - model.ucls
-> - Main.java
-> - RunConsole.java
+###Contexte : 
 
+Nous allons modéliser une version très simplifiée de fourmilière. Dans le but de pouvoir faire évoluer le modèle, certaines fonctionnalités resterons floues. L'idée est la suivante :
+- Une reine pond une grande quantité de fourmis soldats et a (au moins) une fourmi­chef.
+- La reine donne le signal d'éclosion par phéromones.
+- Les fourmis soldats parcourent le terrain à la recherche de nourriture,
+et la ramènent à la fourmi­chef.
+- Les fourmis soldats ont une durée de vie limitée.
+- Lorsque toutes le fourmis soldats sont mortes, leur fourmi chef meurt
+et la reine peut aller fonder une autre fourmilière.
